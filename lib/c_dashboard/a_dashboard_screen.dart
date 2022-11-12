@@ -23,6 +23,7 @@ class DashboardScreen extends StatefulHookConsumerWidget {
 
 class _DashboardScreenState extends ConsumerState<DashboardScreen> {
   DateTime datetime = DateTime.now();
+  final fireRef = FirebaseFirestore.instance;
 
   @override
   Widget build(BuildContext context) {
@@ -49,15 +50,28 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
         }
       },
       child: StreamBuilder(
-        stream: FirebaseFirestore.instance.collection('product').snapshots(),
-        builder: (BuildContext context, AsyncSnapshot snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
+        stream: fireRef.collection("users").doc(widget.user.email).snapshots(),
+        builder: (BuildContext context, AsyncSnapshot usetSnapshot) {
+          if (usetSnapshot.connectionState == ConnectionState.waiting) {
             return const LoadingScreen();
-          } else if (snapshot.hasData) {
-            return DashboardScaffold(
-              productData: snapshot.data.docs,
-              appName: appName.value,
-              appVersion: appVersion.value,
+          } else if (usetSnapshot.hasData) {
+            return StreamBuilder(
+              stream: fireRef.collection('product').snapshots(),
+              builder: (BuildContext context, AsyncSnapshot productSnapshot) {
+                if (productSnapshot.connectionState ==
+                    ConnectionState.waiting) {
+                  return const LoadingScreen();
+                } else if (productSnapshot.hasData) {
+                  return DashboardScaffold(
+                    userData: usetSnapshot.data,
+                    productData: productSnapshot.data.docs,
+                    appName: appName.value,
+                    appVersion: appVersion.value,
+                  );
+                } else {
+                  return const ErrorScreen();
+                }
+              },
             );
           } else {
             return const ErrorScreen();

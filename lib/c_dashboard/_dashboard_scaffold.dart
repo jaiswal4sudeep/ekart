@@ -11,8 +11,10 @@ class DashboardScaffold extends StatelessWidget {
     required this.productData,
     required this.appName,
     required this.appVersion,
+    required this.userData,
   }) : super(key: key);
   final dynamic productData;
+  final dynamic userData;
   final String appName;
   final String appVersion;
 
@@ -60,6 +62,7 @@ class DashboardScaffold extends StatelessWidget {
         ],
       ),
       drawer: DashboardDrawer(
+        userData: userData,
         appName: appName,
         appVersion: appVersion,
       ),
