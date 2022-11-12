@@ -1,3 +1,5 @@
+import 'package:ekart/b_authentication/authentication_controller.dart';
+import 'package:ekart/b_authentication/authentication_screen.dart';
 import 'package:ekart/utils/app_constant.dart';
 import 'package:ekart/widgets/custom_listtile.dart';
 import 'package:flutter/material.dart';
@@ -88,6 +90,13 @@ class DashboardDrawer extends StatelessWidget {
                 child: CustomListTile(
                   onTap: () {
                     Navigator.of(context).pop();
+                    AuthenticationController.signOut().then(
+                      (value) => Navigator.of(context).pushReplacement(
+                        MaterialPageRoute(
+                          builder: (context) => const AuthenticationScreen(),
+                        ),
+                      ),
+                    );
                   },
                   icon: Icons.logout_rounded,
                   title: 'Log out',

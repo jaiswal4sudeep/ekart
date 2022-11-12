@@ -63,6 +63,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                   return const LoadingScreen();
                 } else if (productSnapshot.hasData) {
                   return DashboardScaffold(
+                    user: widget.user,
                     userData: usetSnapshot.data,
                     productData: productSnapshot.data.docs,
                     appName: appName.value,

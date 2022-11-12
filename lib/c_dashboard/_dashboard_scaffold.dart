@@ -1,7 +1,8 @@
 import 'package:ekart/c_dashboard/b_dashboard_body.dart';
 import 'package:ekart/c_dashboard/c_dashboard_drawer.dart';
 import 'package:ekart/c_dashboard/screens/cart_screen.dart';
-import 'package:ekart/c_dashboard/screens/favorites_screen.dart';
+import 'package:ekart/c_dashboard/screens/favorites/favorites_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -12,11 +13,13 @@ class DashboardScaffold extends StatelessWidget {
     required this.appName,
     required this.appVersion,
     required this.userData,
+    required this.user,
   }) : super(key: key);
   final dynamic productData;
   final dynamic userData;
   final String appName;
   final String appVersion;
+  final User user;
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +33,9 @@ class DashboardScaffold extends StatelessWidget {
             onPressed: () {
               Navigator.of(context).push(
                 MaterialPageRoute(
-                  builder: (context) => const FavoritesScreen(),
+                  builder: (context) => FavoritesScreen(
+                    user: user,
+                  ),
                 ),
               );
             },
