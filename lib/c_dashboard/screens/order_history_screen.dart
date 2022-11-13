@@ -1,15 +1,15 @@
 import 'package:ekart/widgets/back_screen_button.dart';
 import 'package:flutter/material.dart';
 
-class CartScreen extends StatelessWidget {
-  const CartScreen({super.key});
+class OrderHistoryScreen extends StatelessWidget {
+  const OrderHistoryScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          'Cart',
+          'Order History',
         ),
         leading: const BackScreenButton(),
       ),

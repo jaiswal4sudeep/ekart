@@ -9,13 +9,14 @@ class DashboardBody extends HookWidget {
   const DashboardBody({
     Key? key,
     required this.productData,
+    required this.selCategoryIndex,
   }) : super(key: key);
 
   final dynamic productData;
+  final ValueNotifier<int> selCategoryIndex;
 
   @override
   Widget build(BuildContext context) {
-    final selCategoryIndex = useState<int>(0);
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: ListView(
@@ -79,6 +80,16 @@ class DashboardBody extends HookWidget {
               ),
             ),
           ),
+          if (productData.length == 0)
+            Padding(
+              padding: const EdgeInsets.only(top: 8.0),
+              child: Center(
+                child: Text(
+                  'No items available',
+                  style: Theme.of(context).textTheme.headline4,
+                ),
+              ),
+            ),
           GridView.builder(
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 2,

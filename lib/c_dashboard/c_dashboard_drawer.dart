@@ -1,7 +1,12 @@
 import 'package:ekart/b_authentication/authentication_controller.dart';
 import 'package:ekart/b_authentication/authentication_screen.dart';
+import 'package:ekart/c_dashboard/screens/cart_screen.dart';
+import 'package:ekart/c_dashboard/screens/favorites/favorites_screen.dart';
+import 'package:ekart/c_dashboard/screens/order_history_screen.dart';
+import 'package:ekart/c_dashboard/screens/payment_details_screen.dart';
 import 'package:ekart/utils/app_constant.dart';
 import 'package:ekart/widgets/custom_listtile.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -11,11 +16,13 @@ class DashboardDrawer extends StatelessWidget {
     required this.appName,
     required this.appVersion,
     required this.userData,
+    required this.user,
   }) : super(key: key);
 
   final String appName;
   final String appVersion;
   final dynamic userData;
+  final User user;
 
   @override
   Widget build(BuildContext context) {
@@ -57,6 +64,11 @@ class DashboardDrawer extends StatelessWidget {
               CustomListTile(
                 onTap: () {
                   Navigator.of(context).pop();
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => const PaymentDetailsScreen(),
+                    ),
+                  );
                 },
                 icon: Icons.payments_rounded,
                 title: 'Payment details',
@@ -64,23 +76,40 @@ class DashboardDrawer extends StatelessWidget {
               CustomListTile(
                 onTap: () {
                   Navigator.of(context).pop();
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => FavoritesScreen(
+                        user: user,
+                      ),
+                    ),
+                  );
                 },
                 icon: Icons.favorite_rounded,
-                title: 'My favorites',
+                title: 'Favorites',
               ),
               CustomListTile(
                 onTap: () {
                   Navigator.of(context).pop();
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => const CartScreen(),
+                    ),
+                  );
                 },
                 icon: Icons.shopping_bag_rounded,
-                title: 'My cart',
+                title: 'Cart',
               ),
               CustomListTile(
                 onTap: () {
                   Navigator.of(context).pop();
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => const OrderHistoryScreen(),
+                    ),
+                  );
                 },
                 icon: Icons.file_copy_rounded,
-                title: 'Transaction history',
+                title: 'Order history',
               ),
               const Spacer(),
               Card(

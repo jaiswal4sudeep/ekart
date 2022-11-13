@@ -4,9 +4,10 @@ import 'package:ekart/c_dashboard/screens/cart_screen.dart';
 import 'package:ekart/c_dashboard/screens/favorites/favorites_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class DashboardScaffold extends StatelessWidget {
+class DashboardScaffold extends HookWidget {
   const DashboardScaffold({
     Key? key,
     required this.productData,
@@ -14,12 +15,14 @@ class DashboardScaffold extends StatelessWidget {
     required this.appVersion,
     required this.userData,
     required this.user,
+    required this.selCategoryIndex,
   }) : super(key: key);
   final dynamic productData;
   final dynamic userData;
   final String appName;
   final String appVersion;
   final User user;
+  final ValueNotifier<int> selCategoryIndex;
 
   @override
   Widget build(BuildContext context) {
@@ -70,9 +73,11 @@ class DashboardScaffold extends StatelessWidget {
         userData: userData,
         appName: appName,
         appVersion: appVersion,
+        user: user,
       ),
       body: DashboardBody(
         productData: productData,
+        selCategoryIndex: selCategoryIndex,
       ),
     );
   }

@@ -1,4 +1,4 @@
-import 'package:ekart/c_dashboard/a_dashboard_screen.dart';
+import 'package:ekart/c_dashboard/_dashboard_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';

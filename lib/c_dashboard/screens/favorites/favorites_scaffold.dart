@@ -23,7 +23,7 @@ class FavoritesScaffold extends HookWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          'My Favorites',
+          'Favorites',
         ),
         leading: const BackScreenButton(),
       ),

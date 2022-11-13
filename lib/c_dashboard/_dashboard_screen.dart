@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:ekart/c_dashboard/_dashboard_scaffold.dart';
+import 'package:ekart/c_dashboard/a_dashboard_scaffold.dart';
 import 'package:ekart/widgets/error_screen.dart';
 import 'package:ekart/widgets/loading_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -29,6 +29,8 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
   Widget build(BuildContext context) {
     final appVersion = useState<String>('');
     final appName = useState<String>('');
+    final selCategoryIndex = useState<int>(0);
+
     getAppInfo() async {
       PackageInfo packageInfo = await PackageInfo.fromPlatform();
       appVersion.value = packageInfo.version;
@@ -39,6 +41,40 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
       getAppInfo();
       return null;
     });
+
+    Stream<dynamic>? fetchProductData(int selCategoryIndex) {
+      dynamic snapShot;
+      switch (selCategoryIndex) {
+        case 1: // clothes
+          snapShot = fireRef
+              .collection('product')
+              .where('category', isEqualTo: 'clothes')
+              .snapshots();
+          break;
+        case 2: // accessories
+          snapShot = fireRef
+              .collection('product')
+              .where('category', isEqualTo: 'accessories')
+              .snapshots();
+          break;
+        case 3: // electronics
+          snapShot = fireRef
+              .collection('product')
+              .where('category', isEqualTo: 'electronics')
+              .snapshots();
+          break;
+        case 4: // books
+          snapShot = fireRef
+              .collection('product')
+              .where('category', isEqualTo: 'books')
+              .snapshots();
+          break;
+        default: // all
+          snapShot = fireRef.collection('product').snapshots();
+      }
+      return snapShot;
+    }
+
     return WillPopScope(
       onWillPop: () async {
         if (DateTime.now().difference(datetime) >= const Duration(seconds: 2)) {
@@ -56,13 +92,14 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
             return const LoadingScreen();
           } else if (usetSnapshot.hasData) {
             return StreamBuilder(
-              stream: fireRef.collection('product').snapshots(),
+              stream: fetchProductData(selCategoryIndex.value),
               builder: (BuildContext context, AsyncSnapshot productSnapshot) {
                 if (productSnapshot.connectionState ==
                     ConnectionState.waiting) {
                   return const LoadingScreen();
                 } else if (productSnapshot.hasData) {
                   return DashboardScaffold(
+                    selCategoryIndex: selCategoryIndex,
                     user: widget.user,
                     userData: usetSnapshot.data,
                     productData: productSnapshot.data.docs,
