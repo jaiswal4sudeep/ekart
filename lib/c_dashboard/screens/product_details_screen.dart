@@ -3,6 +3,7 @@ import 'package:ekart/c_dashboard/screens/cart_screen.dart';
 import 'package:ekart/utils/app_constant.dart';
 import 'package:ekart/widgets/back_screen_button.dart';
 import 'package:ekart/widgets/custom_button.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -20,6 +21,7 @@ class ProductDetailsScreen extends StatefulHookConsumerWidget {
     required this.rating,
     required this.category,
     required this.availableStock,
+    required this.user,
   });
   final String id;
   final String image;
@@ -29,6 +31,7 @@ class ProductDetailsScreen extends StatefulHookConsumerWidget {
   final String rating;
   final String category;
   final int availableStock;
+  final User user;
 
   @override
   ConsumerState<ProductDetailsScreen> createState() =>
@@ -36,11 +39,36 @@ class ProductDetailsScreen extends StatefulHookConsumerWidget {
 }
 
 class _ProductDetailsScreenState extends ConsumerState<ProductDetailsScreen> {
-  final fireRef = FirebaseFirestore.instance.collection('product');
+  final fireRef = FirebaseFirestore.instance;
+
   @override
   Widget build(BuildContext context) {
+    Future<bool> isFavAdded(String id) async {
+      var isAddedRef =
+          await fireRef.collection('users').doc(widget.user.email).get();
+      if (isAddedRef.exists && isAddedRef['favoriteItems']['productId'] == id) {
+        return true;
+      }
+      return false;
+    }
+
     final noOfItems = useState<int>(1);
-    final isFavorite = useState(false);
+    final isFavorite = useState<bool>(false);
+
+    addToFavorites(String id) async {
+      // isFavorite.value = await isFavAdded(widget.id);
+      // Fluttertoast.showToast(msg: isFavorite.value.toString());
+    }
+
+    checkIsFavAdded(String id) async {
+      isFavorite.value = await isFavAdded(id);
+    }
+
+    useEffect(() {
+      checkIsFavAdded(widget.id);
+      return null;
+    });
+
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
@@ -48,10 +76,7 @@ class _ProductDetailsScreenState extends ConsumerState<ProductDetailsScreen> {
         actions: [
           IconButton(
             onPressed: () {
-              isFavorite.value = !isFavorite.value;
-              // fireRef.doc(widget.id).update({
-              //   'isFavorite': isFavorite.value,
-              // });
+              addToFavorites(widget.id);
             },
             icon: Icon(
               isFavorite.value
@@ -81,99 +106,93 @@ class _ProductDetailsScreenState extends ConsumerState<ProductDetailsScreen> {
       ),
       body: Column(
         children: [
-          Hero(
-            tag: widget.image,
-            child: Padding(
-              padding: const EdgeInsets.all(12.0),
-              child: ListView(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                children: [
-                  SizedBox(
-                    height: 10.h,
-                  ),
-                  Text(
-                    widget.category[0].toUpperCase() +
-                        widget.category.substring(1),
-                    overflow: TextOverflow.ellipsis,
-                    textAlign: TextAlign.left,
-                    style: Theme.of(context).textTheme.headline4,
-                  ),
-                  SizedBox(
-                    height: 5.h,
-                  ),
-                  Text(
-                    widget.title,
-                    overflow: TextOverflow.ellipsis,
-                    textAlign: TextAlign.left,
-                    style: Theme.of(context).textTheme.headline3!.copyWith(
-                          fontWeight: FontWeight.bold,
-                        ),
-                  ),
-                  SizedBox(
-                    height: 25.h,
-                  ),
-                  Center(
-                    child: CircleAvatar(
-                      radius: 80.r,
-                      backgroundColor: AppConstant.secondaryColor,
-                      child: Image.network(
-                        widget.image,
-                        height: 90.h,
+          Padding(
+            padding: const EdgeInsets.all(12.0),
+            child: ListView(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              children: [
+                SizedBox(
+                  height: 10.h,
+                ),
+                Text(
+                  widget.category[0].toUpperCase() +
+                      widget.category.substring(1),
+                  overflow: TextOverflow.ellipsis,
+                  textAlign: TextAlign.left,
+                  style: Theme.of(context).textTheme.headline4,
+                ),
+                SizedBox(
+                  height: 5.h,
+                ),
+                Text(
+                  widget.title,
+                  overflow: TextOverflow.ellipsis,
+                  textAlign: TextAlign.left,
+                  style: Theme.of(context).textTheme.headline3!.copyWith(
+                        fontWeight: FontWeight.bold,
                       ),
+                ),
+                SizedBox(
+                  height: 25.h,
+                ),
+                Center(
+                  child: CircleAvatar(
+                    radius: 80.r,
+                    backgroundColor: AppConstant.secondaryColor,
+                    child: Image.network(
+                      widget.image,
+                      height: 90.h,
                     ),
                   ),
-                  SizedBox(
-                    height: 25.h,
+                ),
+                SizedBox(
+                  height: 25.h,
+                ),
+                Text(
+                  widget.description,
+                  textAlign: TextAlign.justify,
+                  style: Theme.of(context).textTheme.subtitle1!.copyWith(
+                        fontSize: 13.sp,
+                      ),
+                ),
+                SizedBox(
+                  height: 10.h,
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 4),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Icon(
+                        Icons.star_rounded,
+                        size: 25.sp,
+                        color: AppConstant.subtitlecolor,
+                      ),
+                      Text(
+                        widget.rating,
+                        style: Theme.of(context).textTheme.headline3!.copyWith(
+                              fontWeight: FontWeight.bold,
+                            ),
+                      ),
+                      const Spacer(),
+                      Text(
+                        '₹ 10 ',
+                        style: Theme.of(context).textTheme.headline4!.copyWith(
+                              decoration: TextDecoration.lineThrough,
+                            ),
+                      ),
+                      Text(
+                        '₹ ${widget.price}',
+                        style: Theme.of(context).textTheme.headline1!.copyWith(
+                              fontWeight: FontWeight.bold,
+                              color: AppConstant.primaryColor,
+                            ),
+                      ),
+                    ],
                   ),
-                  Text(
-                    widget.description,
-                    textAlign: TextAlign.justify,
-                    style: Theme.of(context).textTheme.subtitle1!.copyWith(
-                          fontSize: 13.sp,
-                        ),
-                  ),
-                  SizedBox(
-                    height: 10.h,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 4),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        Icon(
-                          Icons.star_rounded,
-                          size: 25.sp,
-                          color: AppConstant.subtitlecolor,
-                        ),
-                        Text(
-                          widget.rating,
-                          style:
-                              Theme.of(context).textTheme.headline3!.copyWith(
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                        ),
-                        const Spacer(),
-                        Text(
-                          '₹ 10 ',
-                          style:
-                              Theme.of(context).textTheme.headline4!.copyWith(
-                                    decoration: TextDecoration.lineThrough,
-                                  ),
-                        ),
-                        Text(
-                          '₹ ${widget.price}',
-                          style:
-                              Theme.of(context).textTheme.headline1!.copyWith(
-                                    fontWeight: FontWeight.bold,
-                                    color: AppConstant.primaryColor,
-                                  ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
           const Spacer(),

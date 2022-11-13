@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:ekart/c_dashboard/screens/product_details_screen.dart';
 import 'package:ekart/widgets/back_screen_button.dart';
 import 'package:ekart/widgets/error_screen.dart';
 import 'package:ekart/widgets/loading_screen.dart';
@@ -44,14 +45,31 @@ class FavoritesScaffold extends HookWidget {
                     .doc(productId)
                     .snapshots(),
                 builder: (context, snapshot) {
+                  var data = snapshot.data;
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return const LoadingScreen();
-                  } else if (snapshot.hasData) {
-                    var data = snapshot.data;
+                  } else if (snapshot.hasData && data != null) {
                     return Card(
                       child: ListTile(
+                        onTap: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => ProductDetailsScreen(
+                                id: data.reference.id.toString(),
+                                category: data['category'],
+                                description: data['description'],
+                                image: data['image'],
+                                price: data['price'],
+                                rating: data['rating'].toString(),
+                                title: data['title'],
+                                availableStock: data['availableStock'],
+                                user: user,
+                              ),
+                            ),
+                          );
+                        },
                         leading: Image.network(
-                          data!['image'],
+                          data['image'],
                           height: 80.sp,
                         ),
                         title: Text(

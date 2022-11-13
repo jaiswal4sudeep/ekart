@@ -1,6 +1,7 @@
 import 'package:ekart/c_dashboard/screens/product_details_screen.dart';
 import 'package:ekart/utils/app_constant.dart';
 import 'package:ekart/widgets/custom_chip.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -10,10 +11,12 @@ class DashboardBody extends HookWidget {
     Key? key,
     required this.productData,
     required this.selCategoryIndex,
+    required this.user,
   }) : super(key: key);
 
   final dynamic productData;
   final ValueNotifier<int> selCategoryIndex;
+  final User user;
 
   @override
   Widget build(BuildContext context) {
@@ -115,88 +118,85 @@ class DashboardBody extends HookWidget {
                       rating: data['rating'].toString(),
                       title: data['title'],
                       availableStock: data['availableStock'],
+                      user: user,
                     ),
                   ),
                 ),
-                child: Hero(
-                  tag: data['image'],
-                  transitionOnUserGestures: true,
-                  child: Card(
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Image.network(
-                            data['image'],
-                            height: 70.h,
-                          ),
-                          SizedBox(
-                            height: 10.h,
-                          ),
-                          Text(
-                            data['title'],
-                            overflow: TextOverflow.ellipsis,
-                            textAlign: TextAlign.center,
-                            style:
-                                Theme.of(context).textTheme.headline5!.copyWith(
+                child: Card(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Image.network(
+                          data['image'],
+                          height: 70.h,
+                        ),
+                        SizedBox(
+                          height: 10.h,
+                        ),
+                        Text(
+                          data['title'],
+                          overflow: TextOverflow.ellipsis,
+                          textAlign: TextAlign.center,
+                          style:
+                              Theme.of(context).textTheme.headline5!.copyWith(
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                        ),
+                        SizedBox(
+                          height: 5.h,
+                        ),
+                        Text(
+                          data['description'],
+                          overflow: TextOverflow.ellipsis,
+                          style: Theme.of(context).textTheme.subtitle1,
+                        ),
+                        SizedBox(
+                          height: 5.h,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 4),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              Icon(
+                                Icons.star_rounded,
+                                color: AppConstant.subtitlecolor,
+                              ),
+                              Text(
+                                '${data['rating']}',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .headline5!
+                                    .copyWith(
                                       fontWeight: FontWeight.bold,
                                     ),
+                              ),
+                              const Spacer(),
+                              Text(
+                                '₹ 10 ',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .headline5!
+                                    .copyWith(
+                                      decoration: TextDecoration.lineThrough,
+                                    ),
+                              ),
+                              Text(
+                                '₹${data['price']}',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .headline3!
+                                    .copyWith(
+                                      fontWeight: FontWeight.bold,
+                                      color: AppConstant.primaryColor,
+                                    ),
+                              ),
+                            ],
                           ),
-                          SizedBox(
-                            height: 5.h,
-                          ),
-                          Text(
-                            data['description'],
-                            overflow: TextOverflow.ellipsis,
-                            style: Theme.of(context).textTheme.subtitle1,
-                          ),
-                          SizedBox(
-                            height: 5.h,
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 4),
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.end,
-                              children: [
-                                Icon(
-                                  Icons.star_rounded,
-                                  color: AppConstant.subtitlecolor,
-                                ),
-                                Text(
-                                  '${data['rating']}',
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .headline5!
-                                      .copyWith(
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                ),
-                                const Spacer(),
-                                Text(
-                                  '₹ 10 ',
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .headline5!
-                                      .copyWith(
-                                        decoration: TextDecoration.lineThrough,
-                                      ),
-                                ),
-                                Text(
-                                  '₹${data['price']}',
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .headline3!
-                                      .copyWith(
-                                        fontWeight: FontWeight.bold,
-                                        color: AppConstant.primaryColor,
-                                      ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                   ),
                 ),
