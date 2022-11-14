@@ -85,7 +85,7 @@ class DashboardDrawer extends StatelessWidget {
                   );
                 },
                 icon: Icons.favorite_rounded,
-                title: 'Favorites',
+                title: 'Favorite items',
               ),
               CustomListTile(
                 onTap: () {

@@ -1,7 +1,8 @@
-import 'package:ekart/c_dashboard/b_dashboard_body.dart';
-import 'package:ekart/c_dashboard/c_dashboard_drawer.dart';
 import 'package:ekart/c_dashboard/screens/cart_screen.dart';
 import 'package:ekart/c_dashboard/screens/favorites/favorites_screen.dart';
+import 'package:ekart/c_dashboard/widgets/b_dashboard_body.dart';
+import 'package:ekart/c_dashboard/widgets/c_dashboard_drawer.dart';
+import 'package:ekart/utils/app_constant.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -95,17 +96,34 @@ class CustomSearchDelegate extends SearchDelegate {
     'all',
     'books',
   ];
+
+  @override
+  ThemeData appBarTheme(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
+    return theme;
+  }
+
+  @override
+  TextStyle get searchFieldStyle => TextStyle(
+        color: AppConstant.titlecolor,
+        fontSize: 12.sp,
+      );
+
+  @override
+  String? get searchFieldLabel => 'Search products';
+
   @override
   List<Widget>? buildActions(BuildContext context) {
     return [
-      IconButton(
-        onPressed: () {
-          query = '';
-        },
-        icon: const Icon(
-          Icons.clear_rounded,
-        ),
-      )
+      if (query.isNotEmpty)
+        IconButton(
+          onPressed: () {
+            query = '';
+          },
+          icon: const Icon(
+            Icons.clear_rounded,
+          ),
+        )
     ];
   }
 
@@ -134,7 +152,10 @@ class CustomSearchDelegate extends SearchDelegate {
       itemBuilder: (context, index) {
         var result = matchQuery[index];
         return ListTile(
-          title: Text(result),
+          title: Text(
+            result,
+            style: Theme.of(context).textTheme.subtitle1,
+          ),
         );
       },
     );
@@ -153,7 +174,10 @@ class CustomSearchDelegate extends SearchDelegate {
       itemBuilder: (context, index) {
         var result = matchQuery[index];
         return ListTile(
-          title: Text(result),
+          title: Text(
+            result,
+            style: Theme.of(context).textTheme.subtitle1,
+          ),
         );
       },
     );

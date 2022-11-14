@@ -35,14 +35,12 @@ class AuthenticationController {
         if (isNewUser) {
           await fireRef.collection("users").doc(userCredential.user!.email).set(
             {
-              'uid': user.uid,
               'displayName': user.displayName.toString(),
               'email': user.email.toString(),
               'photoURL': user.photoURL.toString(),
+              'favoriteItems': [],
             },
           );
-          // await handleLinkNewAcc();
-          // await createAndSaveReferLink();
         }
       } on FirebaseAuthException catch (e) {
         if (e.code == 'account-exists-with-different-credential') {

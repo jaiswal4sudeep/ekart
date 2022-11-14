@@ -1,6 +1,7 @@
 import 'package:ekart/c_dashboard/screens/product_details_screen.dart';
 import 'package:ekart/utils/app_constant.dart';
 import 'package:ekart/widgets/custom_chip.dart';
+import 'package:ekart/widgets/no_data.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -83,16 +84,7 @@ class DashboardBody extends HookWidget {
               ),
             ),
           ),
-          if (productData.length == 0)
-            Padding(
-              padding: const EdgeInsets.only(top: 8.0),
-              child: Center(
-                child: Text(
-                  'No items available',
-                  style: Theme.of(context).textTheme.headline4,
-                ),
-              ),
-            ),
+          if (productData.length == 0) const NoData(),
           GridView.builder(
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 2,

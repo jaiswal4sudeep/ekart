@@ -1,8 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:ekart/c_dashboard/screens/product_details_screen.dart';
 import 'package:ekart/widgets/back_screen_button.dart';
-import 'package:ekart/widgets/error_screen.dart';
-import 'package:ekart/widgets/loading_screen.dart';
+import 'package:ekart/widgets/no_data.dart';
+import 'package:ekart/widgets/shimmer_widgets.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -20,75 +19,62 @@ class FavoritesScaffold extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final productId = favItemData['favoriteItems']['productId'];
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          'Favorites',
+          'Favorite Items',
         ),
         leading: const BackScreenButton(),
       ),
       body: favItemData['favoriteItems'].length == 0
-          ? Center(
-              child: Text(
-                'No items added yet',
-                style: Theme.of(context).textTheme.subtitle1!.copyWith(
-                      fontWeight: FontWeight.bold,
-                    ),
-              ),
-            )
+          ? const NoData()
           : Padding(
               padding: const EdgeInsets.all(8.0),
-              child: StreamBuilder(
-                stream: FirebaseFirestore.instance
-                    .collection('product')
-                    .doc(productId)
-                    .snapshots(),
-                builder: (context, snapshot) {
-                  var data = snapshot.data;
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const LoadingScreen();
-                  } else if (snapshot.hasData && data != null) {
-                    return Card(
-                      child: ListTile(
-                        onTap: () {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (context) => ProductDetailsScreen(
-                                id: data.reference.id.toString(),
-                                category: data['category'],
-                                description: data['description'],
-                                image: data['image'],
-                                price: data['price'],
-                                rating: data['rating'].toString(),
-                                title: data['title'],
-                                availableStock: data['availableStock'],
-                                user: user,
-                              ),
+              child: ListView.builder(
+                itemCount: favItemData['favoriteItems'].length,
+                itemBuilder: (context, index) {
+                  return FutureBuilder(
+                    future: FirebaseFirestore.instance
+                        .collection('product')
+                        .where('productId',
+                            isEqualTo: favItemData['favoriteItems'][index])
+                        .get(),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const Center(
+                          child: ShimmerListTile(),
+                        );
+                      } else if (snapshot.hasData) {
+                        final data = snapshot.data?.docs[index];
+                        return Card(
+                          child: ListTile(
+                            leading: Image.network(
+                              data!['image'],
+                              height: 80.sp,
                             ),
-                          );
-                        },
-                        leading: Image.network(
-                          data['image'],
-                          height: 80.sp,
-                        ),
-                        title: Text(
-                          data['title'],
-                          style:
-                              Theme.of(context).textTheme.headline4!.copyWith(
+                            title: Text(
+                              data['title'],
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .headline4!
+                                  .copyWith(
                                     fontWeight: FontWeight.bold,
                                   ),
-                        ),
-                        subtitle: Text(
-                          data['description'],
-                          overflow: TextOverflow.ellipsis,
-                          style: Theme.of(context).textTheme.subtitle1,
-                        ),
-                      ),
-                    );
-                  } else {
-                    return const ErrorScreen();
-                  }
+                            ),
+                            subtitle: Text(
+                              data['description'],
+                              overflow: TextOverflow.ellipsis,
+                              style: Theme.of(context).textTheme.subtitle1,
+                            ),
+                          ),
+                        );
+                      } else {
+                        return const Center(
+                          child: Text('An error occured'),
+                        );
+                      }
+                    },
+                  );
                 },
               ),
             ),

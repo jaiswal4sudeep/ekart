@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:ekart/c_dashboard/a_dashboard_scaffold.dart';
+import 'package:ekart/c_dashboard/widgets/a_dashboard_scaffold.dart';
+import 'package:ekart/c_dashboard/widgets/dashboard_loading_screen.dart';
 import 'package:ekart/widgets/error_screen.dart';
-import 'package:ekart/widgets/loading_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -89,14 +89,14 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
         stream: fireRef.collection("users").doc(widget.user.email).snapshots(),
         builder: (BuildContext context, AsyncSnapshot usetSnapshot) {
           if (usetSnapshot.connectionState == ConnectionState.waiting) {
-            return const LoadingScreen();
+            return const DashboardLoadingScreen();
           } else if (usetSnapshot.hasData) {
             return StreamBuilder(
               stream: fetchProductData(selCategoryIndex.value),
               builder: (BuildContext context, AsyncSnapshot productSnapshot) {
                 if (productSnapshot.connectionState ==
                     ConnectionState.waiting) {
-                  return const LoadingScreen();
+                  return const DashboardLoadingScreen();
                 } else if (productSnapshot.hasData) {
                   return DashboardScaffold(
                     selCategoryIndex: selCategoryIndex,
