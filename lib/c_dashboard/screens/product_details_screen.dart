@@ -8,9 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-class ProductDetailsScreen extends StatefulHookConsumerWidget {
+class ProductDetailsScreen extends HookWidget {
   const ProductDetailsScreen({
     super.key,
     required this.id,
@@ -34,18 +33,11 @@ class ProductDetailsScreen extends StatefulHookConsumerWidget {
   final User user;
 
   @override
-  ConsumerState<ProductDetailsScreen> createState() =>
-      _ProductDetailsScreenState();
-}
-
-class _ProductDetailsScreenState extends ConsumerState<ProductDetailsScreen> {
-  final fireRef = FirebaseFirestore.instance;
-
-  @override
   Widget build(BuildContext context) {
+    final fireRef = FirebaseFirestore.instance;
+
     Future<bool> isFavAdded(String id) async {
-      var isAddedRef =
-          await fireRef.collection('users').doc(widget.user.email).get();
+      var isAddedRef = await fireRef.collection('users').doc(user.email).get();
       if (isAddedRef.exists && isAddedRef['favoriteItems']['productId'] == id) {
         return true;
       }
@@ -65,18 +57,18 @@ class _ProductDetailsScreenState extends ConsumerState<ProductDetailsScreen> {
     }
 
     useEffect(() {
-      checkIsFavAdded(widget.id);
+      checkIsFavAdded(id);
       return null;
     });
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title),
+        title: Text(title),
         leading: const BackScreenButton(),
         actions: [
           IconButton(
             onPressed: () {
-              addToFavorites(widget.id);
+              addToFavorites(id);
             },
             icon: Icon(
               isFavorite.value
@@ -116,8 +108,7 @@ class _ProductDetailsScreenState extends ConsumerState<ProductDetailsScreen> {
                   height: 10.h,
                 ),
                 Text(
-                  widget.category[0].toUpperCase() +
-                      widget.category.substring(1),
+                  category[0].toUpperCase() + category.substring(1),
                   overflow: TextOverflow.ellipsis,
                   textAlign: TextAlign.left,
                   style: Theme.of(context).textTheme.headline4,
@@ -126,7 +117,7 @@ class _ProductDetailsScreenState extends ConsumerState<ProductDetailsScreen> {
                   height: 5.h,
                 ),
                 Text(
-                  widget.title,
+                  title,
                   overflow: TextOverflow.ellipsis,
                   textAlign: TextAlign.left,
                   style: Theme.of(context).textTheme.headline3!.copyWith(
@@ -141,8 +132,8 @@ class _ProductDetailsScreenState extends ConsumerState<ProductDetailsScreen> {
                     radius: 80.r,
                     backgroundColor: AppConstant.secondaryColor,
                     child: Image.network(
-                      widget.image,
-                      height: 90.h,
+                      image,
+                      width: 90.r,
                     ),
                   ),
                 ),
@@ -150,7 +141,7 @@ class _ProductDetailsScreenState extends ConsumerState<ProductDetailsScreen> {
                   height: 25.h,
                 ),
                 Text(
-                  widget.description,
+                  description,
                   textAlign: TextAlign.justify,
                   style: Theme.of(context).textTheme.subtitle1!.copyWith(
                         fontSize: 13.sp,
@@ -170,7 +161,7 @@ class _ProductDetailsScreenState extends ConsumerState<ProductDetailsScreen> {
                         color: AppConstant.subtitlecolor,
                       ),
                       Text(
-                        widget.rating,
+                        rating,
                         style: Theme.of(context).textTheme.headline3!.copyWith(
                               fontWeight: FontWeight.bold,
                             ),
@@ -183,7 +174,7 @@ class _ProductDetailsScreenState extends ConsumerState<ProductDetailsScreen> {
                             ),
                       ),
                       Text(
-                        '₹ ${widget.price}',
+                        '₹ $price',
                         style: Theme.of(context).textTheme.headline1!.copyWith(
                               fontWeight: FontWeight.bold,
                               color: AppConstant.primaryColor,
@@ -210,7 +201,7 @@ class _ProductDetailsScreenState extends ConsumerState<ProductDetailsScreen> {
                         ),
                   ),
                   Text(
-                    '₹${widget.price * noOfItems.value}',
+                    '₹${price * noOfItems.value}',
                     style: Theme.of(context).textTheme.headline3!.copyWith(
                           fontWeight: FontWeight.bold,
                           color: AppConstant.primaryColor,
@@ -250,19 +241,19 @@ class _ProductDetailsScreenState extends ConsumerState<ProductDetailsScreen> {
                     ),
               ),
               IconButton(
-                onPressed: noOfItems.value < widget.availableStock
+                onPressed: noOfItems.value < availableStock
                     ? () {
                         noOfItems.value++;
                       }
                     : () {
                         Fluttertoast.showToast(
                           msg:
-                              'Currently only ${widget.availableStock} item(s) available.',
+                              'Currently only $availableStock item(s) available.',
                         );
                       },
                 icon: Icon(
                   Icons.add_circle_rounded,
-                  color: noOfItems.value < widget.availableStock
+                  color: noOfItems.value < availableStock
                       ? AppConstant.subtitlecolor
                       : AppConstant.subtitlecolor.withOpacity(0.5),
                 ),

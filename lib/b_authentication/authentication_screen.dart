@@ -3,23 +3,16 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:ekart/b_authentication/authentication_controller.dart';
 import 'package:ekart/b_authentication/header_painter.dart';
 import 'package:ekart/utils/app_constant.dart';
 import 'package:ekart/widgets/custom_button.dart';
 
-class AuthenticationScreen extends StatefulHookConsumerWidget {
+class AuthenticationScreen extends HookWidget {
   const AuthenticationScreen({
     super.key,
   });
 
-  @override
-  ConsumerState<AuthenticationScreen> createState() =>
-      _AuthenticationScreenState();
-}
-
-class _AuthenticationScreenState extends ConsumerState<AuthenticationScreen> {
   @override
   Widget build(BuildContext context) {
     final isLoading = useState<bool>(false);
