@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:ekart/c_dashboard/widgets/a_dashboard_scaffold.dart';
+import 'package:ekart/c_dashboard/home/a_dashboard_scaffold.dart';
 import 'package:ekart/c_dashboard/widgets/dashboard_loading_screen.dart';
 import 'package:ekart/widgets/error_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -86,7 +86,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
         }
       },
       child: StreamBuilder(
-        stream: fireRef.collection("users").doc(widget.user.email).snapshots(),
+        stream: fireRef.collection("user").doc(widget.user.email).snapshots(),
         builder: (BuildContext context, AsyncSnapshot usetSnapshot) {
           if (usetSnapshot.connectionState == ConnectionState.waiting) {
             return const DashboardLoadingScreen();

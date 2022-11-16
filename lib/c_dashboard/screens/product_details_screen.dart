@@ -36,25 +36,45 @@ class ProductDetailsScreen extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final fireRef = FirebaseFirestore.instance;
+    final noOfItems = useState<int>(1);
+    final isWishlisted = useState<bool>(false);
 
     Future<bool> isFavAdded(String id) async {
-      var isAddedRef = await fireRef.collection('users').doc(user.email).get();
-      if (isAddedRef.exists && isAddedRef['favoriteItems']['productId'] == id) {
-        return true;
-      }
+      var document = fireRef.collection('user').doc(user.email);
+      document.get().then((document) {
+        var data = document.data();
+        if (data!['wishlist'].contains(id)) {
+          isWishlisted.value = true;
+          return true;
+        }
+      });
       return false;
     }
 
-    final noOfItems = useState<int>(1);
-    final isFavorite = useState<bool>(false);
-
-    addToFavorites(String id) async {
-      // isFavorite.value = await isFavAdded(widget.id);
-      // Fluttertoast.showToast(msg: isFavorite.value.toString());
+    checkIsFavAdded(String id) async {
+      isWishlisted.value = await isFavAdded(id);
     }
 
-    checkIsFavAdded(String id) async {
-      isFavorite.value = await isFavAdded(id);
+    addToWishlist(String id) {
+      if (isWishlisted.value) {
+        fireRef.collection('user').doc(user.email).update(
+          {
+            'wishlist': FieldValue.arrayRemove([id])
+          },
+        ).then(
+          (value) => checkIsFavAdded(id).then(
+            (value) => Fluttertoast.showToast(msg: 'Removed from wishlist'),
+          ),
+        );
+      } else {
+        fireRef.collection('user').doc(user.email).set({
+          'wishlist': FieldValue.arrayUnion([id])
+        }, SetOptions(merge: true)).then(
+          (value) => checkIsFavAdded(id).then(
+            (value) => Fluttertoast.showToast(msg: 'Added in wishlist'),
+          ),
+        );
+      }
     }
 
     useEffect(() {
@@ -69,13 +89,13 @@ class ProductDetailsScreen extends HookWidget {
         actions: [
           IconButton(
             onPressed: () {
-              addToFavorites(id);
+              addToWishlist(id);
             },
             icon: Icon(
-              isFavorite.value
+                isWishlisted.value
                   ? Icons.favorite_rounded
                   : Icons.favorite_outline_rounded,
-              color: isFavorite.value
+              color: isWishlisted.value
                   ? AppConstant.red
                   : AppConstant.titlecolor.withOpacity(0.8),
             ),
@@ -155,7 +175,8 @@ class ProductDetailsScreen extends HookWidget {
                       backgroundColor: AppConstant.secondaryColor,
                       child: Image.network(
                         image,
-                        width: 90.r,
+                        width: 120.r,
+                        height: 120.r,
                       ),
                     ),
                   ),
@@ -176,7 +197,6 @@ class ProductDetailsScreen extends HookWidget {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 4),
                   child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
                       Icon(
                         Icons.star_rounded,

@@ -1,7 +1,7 @@
 import 'package:ekart/b_authentication/authentication_controller.dart';
 import 'package:ekart/b_authentication/authentication_screen.dart';
+import 'package:ekart/c_dashboard/screens/b_wishlist/wishlist_screen.dart';
 import 'package:ekart/c_dashboard/screens/cart_screen.dart';
-import 'package:ekart/c_dashboard/screens/favorites/favorites_screen.dart';
 import 'package:ekart/c_dashboard/screens/order_history_screen.dart';
 import 'package:ekart/c_dashboard/screens/payment_details_screen.dart';
 import 'package:ekart/utils/app_constant.dart';
@@ -82,7 +82,7 @@ class DashboardDrawer extends StatelessWidget {
                   Navigator.of(context).pop();
                   Navigator.of(context).push(
                     MaterialPageRoute(
-                      builder: (context) => FavoritesScreen(
+                      builder: (context) => WishlistScreen(
                         user: user,
                       ),
                     ),
@@ -93,7 +93,7 @@ class DashboardDrawer extends StatelessWidget {
                   height: 20.sp,
                   color: AppConstant.subtitlecolor,
                 ),
-                title: 'Favorite items',
+                title: 'Wishlist',
               ),
               CustomListTile(
                 onTap: () {

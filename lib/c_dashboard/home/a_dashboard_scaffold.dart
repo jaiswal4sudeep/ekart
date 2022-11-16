@@ -1,7 +1,7 @@
+import 'package:ekart/c_dashboard/home/b_dashboard_body.dart';
+import 'package:ekart/c_dashboard/home/c_dashboard_drawer.dart';
+import 'package:ekart/c_dashboard/screens/b_wishlist/wishlist_screen.dart';
 import 'package:ekart/c_dashboard/screens/cart_screen.dart';
-import 'package:ekart/c_dashboard/screens/favorites/favorites_screen.dart';
-import 'package:ekart/c_dashboard/widgets/b_dashboard_body.dart';
-import 'package:ekart/c_dashboard/widgets/c_dashboard_drawer.dart';
 import 'package:ekart/utils/app_constant.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -37,7 +37,7 @@ class DashboardScaffold extends HookWidget {
             onPressed: () {
               Navigator.of(context).push(
                 MaterialPageRoute(
-                  builder: (context) => FavoritesScreen(
+                  builder: (context) => WishlistScreen(
                     user: user,
                   ),
                 ),

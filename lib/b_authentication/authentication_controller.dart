@@ -29,16 +29,16 @@ class AuthenticationController {
             await auth.signInWithCredential(credential);
 
         user = userCredential.user;
-        var getData = await fireRef.collection('users').doc(user!.email).get();
+        var getData = await fireRef.collection('user').doc(user!.email).get();
         isNewUser = getData.exists ? false : true;
 
         if (isNewUser) {
-          await fireRef.collection("users").doc(userCredential.user!.email).set(
+          await fireRef.collection("user").doc(userCredential.user!.email).set(
             {
               'displayName': user.displayName.toString(),
               'email': user.email.toString(),
               'photoURL': user.photoURL.toString(),
-              'favoriteItems': [],
+              'wishlist': [],
             },
           );
         }

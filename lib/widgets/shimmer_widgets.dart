@@ -69,50 +69,62 @@ class ShimmerGridTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            ShimmerContainer(
-              width: 60.h,
-              height: 60.h,
-            ),
-            SizedBox(
-              height: 10.h,
-            ),
-            ShimmerContainer(
-              width: 70.w,
+      child: Column(
+        children: [
+          Align(
+            alignment: Alignment.centerLeft,
+            child: ShimmerContainer(
+              width: 50.w,
               height: 15.h,
             ),
-            SizedBox(
-              height: 5.h,
+          ),
+          SizedBox(
+            height: 10.h,
+          ),
+          ShimmerContainer(
+            width: 65.h,
+            height: 65.h,
+          ),
+          SizedBox(
+            height: 10.h,
+          ),
+          ShimmerContainer(
+            width: 100.w,
+            height: 15.h,
+          ),
+          SizedBox(
+            height: 5.h,
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                ShimmerContainer(
+                  width: 50.w,
+                  height: 15.h,
+                ),
+                ShimmerContainer(
+                  width: 50.w,
+                  height: 15.h,
+                ),
+              ],
             ),
-            ShimmerContainer(
-              width: 140.w,
-              height: 13.h,
-            ),
-            SizedBox(
-              height: 5.h,
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 4),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  ShimmerContainer(
-                    width: 50.w,
-                    height: 15.h,
-                  ),
-                  ShimmerContainer(
-                    width: 50.w,
-                    height: 15.h,
-                  ),
-                ],
+          ),
+          SizedBox(
+            height: 5.h,
+          ),
+          Align(
+            alignment: Alignment.centerLeft,
+            child: Padding(
+              padding: const EdgeInsets.only(left: 8),
+              child: ShimmerContainer(
+                width: 50.w,
+                height: 15.h,
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

@@ -136,15 +136,19 @@ class DashboardBody extends HookWidget {
                             ),
                           ),
                           child: Padding(
-                            padding: const EdgeInsets.all(4.0),
+                            padding: const EdgeInsets.symmetric(
+                              vertical: 4,
+                              horizontal: 6,
+                            ),
                             child: Text(
                               '10% off',
                               style: Theme.of(context)
                                   .textTheme
-                                  .headline6!
+                                  .headline5!
                                   .copyWith(
                                     color: AppConstant.secondaryColor,
                                     fontWeight: FontWeight.bold,
+                                    fontSize: 10.5.sp,
                                   ),
                             ),
                           ),

@@ -1,5 +1,5 @@
 import 'package:ekart/b_authentication/authentication_screen.dart';
-import 'package:ekart/c_dashboard/_dashboard_screen.dart';
+import 'package:ekart/c_dashboard/home/_dashboard_screen.dart';
 import 'package:ekart/utils/app_constant.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
