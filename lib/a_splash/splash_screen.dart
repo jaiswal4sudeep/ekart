@@ -22,7 +22,7 @@ class SplashScreen extends HookWidget {
               ? Navigator.of(context).pushReplacement(
                   MaterialPageRoute(
                     builder: (context) => DashboardScreen(
-                      user: user,
+                      email: user.email!,
                     ),
                   ),
                 )

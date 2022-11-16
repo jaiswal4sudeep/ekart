@@ -3,7 +3,6 @@ import 'package:ekart/services/zoom_image.dart';
 import 'package:ekart/utils/app_constant.dart';
 import 'package:ekart/widgets/custom_chip.dart';
 import 'package:ekart/widgets/no_data.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -13,12 +12,14 @@ class DashboardBody extends HookWidget {
     Key? key,
     required this.productData,
     required this.selCategoryIndex,
-    required this.user,
+    required this.email,
+    required this.dailyOffValue,
   }) : super(key: key);
 
   final dynamic productData;
   final ValueNotifier<int> selCategoryIndex;
-  final User user;
+  final String email;
+  final int dailyOffValue;
 
   @override
   Widget build(BuildContext context) {
@@ -111,7 +112,8 @@ class DashboardBody extends HookWidget {
                       rating: data['rating'].toString(),
                       title: data['title'],
                       availableStock: data['availableStock'],
-                      user: user,
+                      email: email,
+                      dailyOffValue: dailyOffValue,
                     ),
                   ),
                 ),
@@ -141,7 +143,7 @@ class DashboardBody extends HookWidget {
                               horizontal: 6,
                             ),
                             child: Text(
-                              '10% off',
+                              '$dailyOffValue% off',
                               style: Theme.of(context)
                                   .textTheme
                                   .headline5!
@@ -186,7 +188,7 @@ class DashboardBody extends HookWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              '₹ ${(data['price'] * 10 / 9).toStringAsFixed(0)} ',
+                              '₹${data['price']}',
                               style: Theme.of(context)
                                   .textTheme
                                   .headline5!
@@ -195,7 +197,7 @@ class DashboardBody extends HookWidget {
                                   ),
                             ),
                             Text(
-                              '₹${data['price']}',
+                              '₹ ${(data['price'] * (100 - dailyOffValue) / 100).toStringAsFixed(0)}',
                               style: Theme.of(context)
                                   .textTheme
                                   .headline4!

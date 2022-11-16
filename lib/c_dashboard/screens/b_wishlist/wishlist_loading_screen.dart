@@ -2,15 +2,18 @@ import 'package:ekart/widgets/back_screen_button.dart';
 import 'package:ekart/widgets/shimmer_widgets.dart';
 import 'package:flutter/material.dart';
 
-class WishlistLoadingScreen extends StatelessWidget {
-  const WishlistLoadingScreen({super.key});
-
+class CustomLoadingScreen extends StatelessWidget {
+  const CustomLoadingScreen({
+    super.key,
+    required this.title,
+  });
+  final String title;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'Wishlist',
+        title: Text(
+          title,
         ),
         leading: const BackScreenButton(),
       ),

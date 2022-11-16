@@ -4,7 +4,6 @@ import 'package:ekart/c_dashboard/screens/product_details_screen.dart';
 import 'package:ekart/widgets/back_screen_button.dart';
 import 'package:ekart/widgets/error_screen.dart';
 import 'package:ekart/widgets/no_data.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -13,11 +12,13 @@ class WishlistScaffold extends HookWidget {
   const WishlistScaffold({
     Key? key,
     required this.productIdList,
-    required this.user,
+    required this.email,
+    required this.dailyOffValue,
   }) : super(key: key);
 
   final List<String> productIdList;
-  final User user;
+  final String email;
+  final int dailyOffValue;
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +39,9 @@ class WishlistScaffold extends HookWidget {
                   .get(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const WishlistLoadingScreen();
+                  return const CustomLoadingScreen(
+                    title: 'Wishlist',
+                  );
                 } else if (snapshot.hasData) {
                   return ListView.builder(
                     physics: const BouncingScrollPhysics(),
@@ -60,7 +63,8 @@ class WishlistScaffold extends HookWidget {
                                   rating: data['rating'].toString(),
                                   category: data['category'],
                                   availableStock: data['availableStock'],
-                                  user: user,
+                                  email: email,
+                                  dailyOffValue: dailyOffValue,
                                 ),
                               ),
                             );

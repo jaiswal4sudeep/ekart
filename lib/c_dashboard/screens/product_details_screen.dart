@@ -1,10 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:ekart/c_dashboard/screens/cart_screen.dart';
+import 'package:ekart/c_dashboard/screens/cart/cart_screen.dart';
 import 'package:ekart/services/zoom_image.dart';
 import 'package:ekart/utils/app_constant.dart';
 import 'package:ekart/widgets/back_screen_button.dart';
 import 'package:ekart/widgets/custom_button.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -21,7 +20,8 @@ class ProductDetailsScreen extends HookWidget {
     required this.rating,
     required this.category,
     required this.availableStock,
-    required this.user,
+    required this.email,
+    required this.dailyOffValue,
   });
   final String id;
   final String image;
@@ -31,16 +31,18 @@ class ProductDetailsScreen extends HookWidget {
   final String rating;
   final String category;
   final int availableStock;
-  final User user;
+  final String email;
+  final int dailyOffValue;
 
   @override
   Widget build(BuildContext context) {
     final fireRef = FirebaseFirestore.instance;
     final noOfItems = useState<int>(1);
     final isWishlisted = useState<bool>(false);
+    final isLoading = useState<bool>(false);
 
     Future<bool> isFavAdded(String id) async {
-      var document = fireRef.collection('user').doc(user.email);
+      var document = fireRef.collection('user').doc(email);
       document.get().then((document) {
         var data = document.data();
         if (data!['wishlist'].contains(id)) {
@@ -57,7 +59,7 @@ class ProductDetailsScreen extends HookWidget {
 
     addToWishlist(String id) {
       if (isWishlisted.value) {
-        fireRef.collection('user').doc(user.email).update(
+        fireRef.collection('user').doc(email).update(
           {
             'wishlist': FieldValue.arrayRemove([id])
           },
@@ -67,7 +69,7 @@ class ProductDetailsScreen extends HookWidget {
           ),
         );
       } else {
-        fireRef.collection('user').doc(user.email).set({
+        fireRef.collection('user').doc(email).set({
           'wishlist': FieldValue.arrayUnion([id])
         }, SetOptions(merge: true)).then(
           (value) => checkIsFavAdded(id).then(
@@ -92,7 +94,7 @@ class ProductDetailsScreen extends HookWidget {
               addToWishlist(id);
             },
             icon: Icon(
-                isWishlisted.value
+              isWishlisted.value
                   ? Icons.favorite_rounded
                   : Icons.favorite_outline_rounded,
               color: isWishlisted.value
@@ -104,7 +106,9 @@ class ProductDetailsScreen extends HookWidget {
             onPressed: () {
               Navigator.of(context).push(
                 MaterialPageRoute(
-                  builder: (context) => const CartScreen(),
+                  builder: (context) => CartScreen(
+                    email: email,
+                  ),
                 ),
               );
             },
@@ -149,7 +153,7 @@ class ProductDetailsScreen extends HookWidget {
                           ),
                     ),
                     Text(
-                      '10% off',
+                      '$dailyOffValue% off',
                       overflow: TextOverflow.ellipsis,
                       textAlign: TextAlign.left,
                       style: Theme.of(context).textTheme.headline5!.copyWith(
@@ -211,13 +215,13 @@ class ProductDetailsScreen extends HookWidget {
                       ),
                       const Spacer(),
                       Text(
-                        '₹ ${(price * 10 / 9).toStringAsFixed(0)} ',
+                        '₹ $price ',
                         style: Theme.of(context).textTheme.headline4!.copyWith(
                               decoration: TextDecoration.lineThrough,
                             ),
                       ),
                       Text(
-                        '₹ $price',
+                        '₹ ${(price * (100 - dailyOffValue) / 100).toStringAsFixed(0)}',
                         style: Theme.of(context).textTheme.headline1!.copyWith(
                               fontWeight: FontWeight.bold,
                               color: AppConstant.primaryColor,
@@ -258,7 +262,7 @@ class ProductDetailsScreen extends HookWidget {
                         ),
                   ),
                   Text(
-                    '₹${price * noOfItems.value}',
+                    '₹ ${((price * (100 - dailyOffValue) / 100) * noOfItems.value).toStringAsFixed(0)}',
                     style: Theme.of(context).textTheme.headline3!.copyWith(
                           fontWeight: FontWeight.bold,
                           color: AppConstant.primaryColor,
@@ -319,7 +323,16 @@ class ProductDetailsScreen extends HookWidget {
                 width: 0.65.sw,
                 height: 40.h,
                 child: GradientButton(
-                  onTap: () {},
+                  isLaoding: isLoading.value,
+                  onTap: () {
+                    addToCart(
+                      id,
+                      email,
+                      noOfItems.value,
+                      fireRef,
+                      isLoading,
+                    );
+                  },
                   title: 'Add to cart',
                 ),
               ),
@@ -332,4 +345,20 @@ class ProductDetailsScreen extends HookWidget {
       ),
     );
   }
+}
+
+void addToCart(
+  String productId,
+  String email,
+  int selectedQuantity,
+  FirebaseFirestore fireRef,
+  ValueNotifier<bool> isLoading,
+) {
+  isLoading.value = true;
+  fireRef.collection('user').doc(email).collection('cart').doc(productId).set({
+    'productId': productId,
+    'selectedQuantity': selectedQuantity,
+  }).then(
+    (value) => isLoading.value = false,
+  );
 }

@@ -102,7 +102,7 @@ class AuthenticationScreen extends HookWidget {
                         navigator.pushReplacement(
                           MaterialPageRoute(
                             builder: (context) => DashboardScreen(
-                              user: user,
+                              email: user.email!,
                             ),
                           ),
                         );

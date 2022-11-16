@@ -1,12 +1,11 @@
 import 'package:ekart/b_authentication/authentication_controller.dart';
 import 'package:ekart/b_authentication/authentication_screen.dart';
 import 'package:ekart/c_dashboard/screens/b_wishlist/wishlist_screen.dart';
-import 'package:ekart/c_dashboard/screens/cart_screen.dart';
+import 'package:ekart/c_dashboard/screens/cart/cart_screen.dart';
 import 'package:ekart/c_dashboard/screens/order_history_screen.dart';
 import 'package:ekart/c_dashboard/screens/payment_details_screen.dart';
 import 'package:ekart/utils/app_constant.dart';
 import 'package:ekart/widgets/custom_listtile.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -16,13 +15,15 @@ class DashboardDrawer extends StatelessWidget {
     required this.appName,
     required this.appVersion,
     required this.userData,
-    required this.user,
+    required this.email,
+    required this.dailyOffValue,
   }) : super(key: key);
 
   final String appName;
   final String appVersion;
   final dynamic userData;
-  final User user;
+  final String email;
+  final int dailyOffValue;
 
   @override
   Widget build(BuildContext context) {
@@ -83,7 +84,8 @@ class DashboardDrawer extends StatelessWidget {
                   Navigator.of(context).push(
                     MaterialPageRoute(
                       builder: (context) => WishlistScreen(
-                        user: user,
+                        email: email,
+                        dailyOffValue: dailyOffValue,
                       ),
                     ),
                   );
@@ -100,7 +102,9 @@ class DashboardDrawer extends StatelessWidget {
                   Navigator.of(context).pop();
                   Navigator.of(context).push(
                     MaterialPageRoute(
-                      builder: (context) => const CartScreen(),
+                      builder: (context) => CartScreen(
+                        email: email,
+                      ),
                     ),
                   );
                 },

@@ -1,9 +1,8 @@
 import 'package:ekart/c_dashboard/home/b_dashboard_body.dart';
 import 'package:ekart/c_dashboard/home/c_dashboard_drawer.dart';
 import 'package:ekart/c_dashboard/screens/b_wishlist/wishlist_screen.dart';
-import 'package:ekart/c_dashboard/screens/cart_screen.dart';
+import 'package:ekart/c_dashboard/screens/cart/cart_screen.dart';
 import 'package:ekart/utils/app_constant.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -15,15 +14,17 @@ class DashboardScaffold extends HookWidget {
     required this.appName,
     required this.appVersion,
     required this.userData,
-    required this.user,
+    required this.email,
     required this.selCategoryIndex,
+    required this.dailyOffValue,
   }) : super(key: key);
   final dynamic productData;
   final dynamic userData;
   final String appName;
   final String appVersion;
-  final User user;
+  final String email;
   final ValueNotifier<int> selCategoryIndex;
+  final int dailyOffValue;
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +39,8 @@ class DashboardScaffold extends HookWidget {
               Navigator.of(context).push(
                 MaterialPageRoute(
                   builder: (context) => WishlistScreen(
-                    user: user,
+                    email: email,
+                    dailyOffValue: dailyOffValue,
                   ),
                 ),
               );
@@ -53,7 +55,9 @@ class DashboardScaffold extends HookWidget {
             onPressed: () {
               Navigator.of(context).push(
                 MaterialPageRoute(
-                  builder: (context) => const CartScreen(),
+                  builder: (context) => CartScreen(
+                    email: email,
+                  ),
                 ),
               );
             },
@@ -85,12 +89,14 @@ class DashboardScaffold extends HookWidget {
         userData: userData,
         appName: appName,
         appVersion: appVersion,
-        user: user,
+        email: email,
+        dailyOffValue: dailyOffValue,
       ),
       body: DashboardBody(
         productData: productData,
         selCategoryIndex: selCategoryIndex,
-        user: user,
+        email: email,
+        dailyOffValue: dailyOffValue,
       ),
     );
   }

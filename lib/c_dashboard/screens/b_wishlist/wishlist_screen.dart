@@ -2,17 +2,18 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ekart/c_dashboard/screens/b_wishlist/wishlist_loading_screen.dart';
 import 'package:ekart/c_dashboard/screens/b_wishlist/wishlist_scaffold.dart';
 import 'package:ekart/widgets/error_screen.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
 class WishlistScreen extends HookWidget {
   const WishlistScreen({
     super.key,
-    required this.user,
+    required this.email,
+    required this.dailyOffValue,
   });
 
-  final User user;
+  final String email;
+  final int dailyOffValue;
 
   @override
   Widget build(BuildContext context) {
@@ -35,11 +36,14 @@ class WishlistScreen extends HookWidget {
           }
         });
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return const WishlistLoadingScreen();
+          return const CustomLoadingScreen(
+            title: 'Wishlist',
+          );
         } else if (snapshot.hasData) {
           return WishlistScaffold(
             productIdList: productId.value,
-            user: user,
+            email: email,
+            dailyOffValue: dailyOffValue,
           );
         } else {
           return const ErrorScreen();
