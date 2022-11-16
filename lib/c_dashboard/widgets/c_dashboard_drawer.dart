@@ -70,7 +70,11 @@ class DashboardDrawer extends StatelessWidget {
                     ),
                   );
                 },
-                icon: Icons.payments_rounded,
+                icon: Image.asset(
+                  'assets/icons/credit-card.png',
+                  height: 25.sp,
+                  color: AppConstant.subtitlecolor,
+                ),
                 title: 'Payment details',
               ),
               CustomListTile(
@@ -84,7 +88,11 @@ class DashboardDrawer extends StatelessWidget {
                     ),
                   );
                 },
-                icon: Icons.favorite_rounded,
+                icon: Image.asset(
+                  'assets/icons/heart.png',
+                  height: 20.sp,
+                  color: AppConstant.subtitlecolor,
+                ),
                 title: 'Favorite items',
               ),
               CustomListTile(
@@ -96,7 +104,11 @@ class DashboardDrawer extends StatelessWidget {
                     ),
                   );
                 },
-                icon: Icons.shopping_bag_rounded,
+                icon: Image.asset(
+                  'assets/icons/shopping-cart.png',
+                  height: 20.sp,
+                  color: AppConstant.subtitlecolor,
+                ),
                 title: 'Cart',
               ),
               CustomListTile(
@@ -108,7 +120,11 @@ class DashboardDrawer extends StatelessWidget {
                     ),
                   );
                 },
-                icon: Icons.file_copy_rounded,
+                icon: Image.asset(
+                  'assets/icons/tracking.png',
+                  height: 25.sp,
+                  color: AppConstant.subtitlecolor,
+                ),
                 title: 'Order history',
               ),
               const Spacer(),
@@ -127,7 +143,11 @@ class DashboardDrawer extends StatelessWidget {
                       ),
                     );
                   },
-                  icon: Icons.logout_rounded,
+                  icon: Image.asset(
+                    'assets/icons/logout.png',
+                    height: 20.sp,
+                    color: AppConstant.subtitlecolor,
+                  ),
                   title: 'Log out',
                 ),
               ),

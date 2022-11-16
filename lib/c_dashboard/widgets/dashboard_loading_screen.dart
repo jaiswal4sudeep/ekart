@@ -1,3 +1,4 @@
+import 'package:ekart/utils/app_constant.dart';
 import 'package:ekart/widgets/shimmer_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -11,39 +12,38 @@ class DashboardLoadingScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: Center(
-          child: ShimmerContainer(
-            width: 30.w,
-            height: 22.h,
+        leading: IconButton(
+          onPressed: () {},
+          icon: const Icon(
+            Icons.menu,
           ),
         ),
-        title: ShimmerContainer(
-          width: 120.w,
-          height: 22.h,
+        title: const Text(
+          'EKart',
         ),
         actions: [
-          Center(
-            child: ShimmerContainer(
-              width: 20.w,
-              height: 22.h,
+          IconButton(
+            onPressed: () {},
+            icon: Image.asset(
+              'assets/icons/heart.png',
+              height: 18.sp,
+              color: AppConstant.subtitlecolor,
             ),
           ),
-          SizedBox(
-            width: 5.w,
-          ),
-          Center(
-            child: ShimmerContainer(
-              width: 20.w,
-              height: 22.h,
+          IconButton(
+            onPressed: () {},
+            icon: Image.asset(
+              'assets/icons/shopping-cart.png',
+              height: 18.sp,
+              color: AppConstant.subtitlecolor,
             ),
           ),
-          SizedBox(
-            width: 5.w,
-          ),
-          Center(
-            child: ShimmerContainer(
-              width: 20.w,
-              height: 22.h,
+          IconButton(
+            onPressed: () {},
+            icon: Image.asset(
+              'assets/icons/search.png',
+              height: 18.sp,
+              color: AppConstant.subtitlecolor,
             ),
           ),
           SizedBox(
@@ -51,74 +51,74 @@ class DashboardLoadingScreen extends StatelessWidget {
           ),
         ],
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: ListView(
-          physics: const BouncingScrollPhysics(),
-          children: [
-            SingleChildScrollView(
-              physics: const BouncingScrollPhysics(),
-              scrollDirection: Axis.horizontal,
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Row(
-                  children: [
-                    ShimmerContainer(
-                      width: 60.w,
-                      height: 20.h,
-                    ),
-                    SizedBox(
-                      width: 5.w,
-                    ),
-                    ShimmerContainer(
-                      width: 60.w,
-                      height: 20.h,
-                    ),
-                    SizedBox(
-                      width: 5.w,
-                    ),
-                    ShimmerContainer(
-                      width: 60.w,
-                      height: 20.h,
-                    ),
-                    SizedBox(
-                      width: 5.w,
-                    ),
-                    ShimmerContainer(
-                      width: 60.w,
-                      height: 20.h,
-                    ),
-                    SizedBox(
-                      width: 5.w,
-                    ),
-                    ShimmerContainer(
-                      width: 60.w,
-                      height: 20.h,
-                    ),
-                    SizedBox(
-                      width: 5.w,
-                    ),
-                    ShimmerContainer(
-                      width: 60.w,
-                      height: 20.h,
-                    ),
-                    SizedBox(
-                      width: 5.w,
-                    ),
-                    ShimmerContainer(
-                      width: 60.w,
-                      height: 20.h,
-                    ),
-                  ],
-                ),
+      body: ListView(
+        physics: const BouncingScrollPhysics(),
+        children: [
+          SingleChildScrollView(
+            physics: const BouncingScrollPhysics(),
+            scrollDirection: Axis.horizontal,
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                children: [
+                  ShimmerContainer(
+                    width: 60.w,
+                    height: 25.h,
+                  ),
+                  SizedBox(
+                    width: 5.w,
+                  ),
+                  ShimmerContainer(
+                    width: 60.w,
+                    height: 25.h,
+                  ),
+                  SizedBox(
+                    width: 5.w,
+                  ),
+                  ShimmerContainer(
+                    width: 60.w,
+                    height: 25.h,
+                  ),
+                  SizedBox(
+                    width: 5.w,
+                  ),
+                  ShimmerContainer(
+                    width: 60.w,
+                    height: 25.h,
+                  ),
+                  SizedBox(
+                    width: 5.w,
+                  ),
+                  ShimmerContainer(
+                    width: 60.w,
+                    height: 25.h,
+                  ),
+                  SizedBox(
+                    width: 5.w,
+                  ),
+                  ShimmerContainer(
+                    width: 60.w,
+                    height: 25.h,
+                  ),
+                  SizedBox(
+                    width: 5.w,
+                  ),
+                  ShimmerContainer(
+                    width: 60.w,
+                    height: 25.h,
+                  ),
+                ],
               ),
             ),
-            GridView.builder(
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: GridView.builder(
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
-                childAspectRatio: 200.sp / 220.sp,
-                crossAxisSpacing: 8.sp,
-                mainAxisSpacing: 8.sp,
+                childAspectRatio: 200.sp / 230.sp,
+                crossAxisSpacing: 4.sp,
+                mainAxisSpacing: 4.sp,
               ),
               physics: const NeverScrollableScrollPhysics(),
               shrinkWrap: true,
@@ -127,8 +127,8 @@ class DashboardLoadingScreen extends StatelessWidget {
                 return const ShimmerGridTile();
               },
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

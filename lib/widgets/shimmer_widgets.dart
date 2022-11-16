@@ -1,4 +1,3 @@
-
 import 'package:ekart/utils/app_constant.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -9,11 +8,9 @@ class ShimmerContainer extends StatelessWidget {
     Key? key,
     required this.width,
     required this.height,
-    this.radius = 5,
   }) : super(key: key);
   final double width;
   final double height;
-  final double? radius;
 
   @override
   Widget build(BuildContext context) {
@@ -25,13 +22,12 @@ class ShimmerContainer extends StatelessWidget {
         height: height,
         decoration: BoxDecoration(
           color: AppConstant.secondaryColor,
-          borderRadius: BorderRadius.circular(radius!),
+          borderRadius: BorderRadius.circular(200),
         ),
       ),
     );
   }
 }
-
 
 class ShimmerListTile extends StatelessWidget {
   const ShimmerListTile({
@@ -45,7 +41,6 @@ class ShimmerListTile extends StatelessWidget {
         leading: ShimmerContainer(
           width: 35.h,
           height: 35.h,
-          radius: 200,
         ),
         title: Align(
           alignment: Alignment.centerLeft,
@@ -66,7 +61,6 @@ class ShimmerListTile extends StatelessWidget {
   }
 }
 
-
 class ShimmerGridTile extends StatelessWidget {
   const ShimmerGridTile({
     Key? key,
@@ -83,7 +77,6 @@ class ShimmerGridTile extends StatelessWidget {
             ShimmerContainer(
               width: 60.h,
               height: 60.h,
-              radius: 200,
             ),
             SizedBox(
               height: 10.h,

@@ -10,16 +10,13 @@ class CustomListTile extends StatelessWidget {
   }) : super(key: key);
   final Function() onTap;
   final String title;
-  final IconData icon;
+  final Widget icon;
 
   @override
   Widget build(BuildContext context) {
     return ListTile(
       onTap: onTap,
-      leading: Icon(
-        icon,
-        color: AppConstant.subtitlecolor,
-      ),
+      leading: icon,
       title: Text(
         title,
         style: Theme.of(context).textTheme.headline5!.copyWith(

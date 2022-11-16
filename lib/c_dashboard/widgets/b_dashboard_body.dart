@@ -1,4 +1,5 @@
 import 'package:ekart/c_dashboard/screens/product_details_screen.dart';
+import 'package:ekart/services/zoom_image.dart';
 import 'package:ekart/utils/app_constant.dart';
 import 'package:ekart/widgets/custom_chip.dart';
 import 'package:ekart/widgets/no_data.dart';
@@ -21,76 +22,76 @@ class DashboardBody extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: ListView(
-        physics: const BouncingScrollPhysics(),
-        children: [
-          SingleChildScrollView(
-            physics: const BouncingScrollPhysics(),
-            scrollDirection: Axis.horizontal,
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-                children: [
-                  CustomChip(
-                    chipText: 'All',
-                    isCompleted: selCategoryIndex.value != 0,
-                    onTap: () {
-                      selCategoryIndex.value = 0;
-                    },
-                  ),
-                  SizedBox(
-                    width: 5.w,
-                  ),
-                  CustomChip(
-                    chipText: 'Clothes',
-                    isCompleted: selCategoryIndex.value != 1,
-                    onTap: () {
-                      selCategoryIndex.value = 1;
-                    },
-                  ),
-                  SizedBox(
-                    width: 5.w,
-                  ),
-                  CustomChip(
-                    chipText: 'Accessories',
-                    isCompleted: selCategoryIndex.value != 2,
-                    onTap: () {
-                      selCategoryIndex.value = 2;
-                    },
-                  ),
-                  SizedBox(
-                    width: 5.w,
-                  ),
-                  CustomChip(
-                    chipText: 'Electronics',
-                    isCompleted: selCategoryIndex.value != 3,
-                    onTap: () {
-                      selCategoryIndex.value = 3;
-                    },
-                  ),
-                  SizedBox(
-                    width: 5.w,
-                  ),
-                  CustomChip(
-                    chipText: 'Books',
-                    isCompleted: selCategoryIndex.value != 4,
-                    onTap: () {
-                      selCategoryIndex.value = 4;
-                    },
-                  ),
-                ],
-              ),
+    return ListView(
+      physics: const BouncingScrollPhysics(),
+      children: [
+        SingleChildScrollView(
+          physics: const BouncingScrollPhysics(),
+          scrollDirection: Axis.horizontal,
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              children: [
+                CustomChip(
+                  chipText: 'All',
+                  isCompleted: selCategoryIndex.value != 0,
+                  onTap: () {
+                    selCategoryIndex.value = 0;
+                  },
+                ),
+                SizedBox(
+                  width: 5.w,
+                ),
+                CustomChip(
+                  chipText: 'Clothes',
+                  isCompleted: selCategoryIndex.value != 1,
+                  onTap: () {
+                    selCategoryIndex.value = 1;
+                  },
+                ),
+                SizedBox(
+                  width: 5.w,
+                ),
+                CustomChip(
+                  chipText: 'Accessories',
+                  isCompleted: selCategoryIndex.value != 2,
+                  onTap: () {
+                    selCategoryIndex.value = 2;
+                  },
+                ),
+                SizedBox(
+                  width: 5.w,
+                ),
+                CustomChip(
+                  chipText: 'Electronics',
+                  isCompleted: selCategoryIndex.value != 3,
+                  onTap: () {
+                    selCategoryIndex.value = 3;
+                  },
+                ),
+                SizedBox(
+                  width: 5.w,
+                ),
+                CustomChip(
+                  chipText: 'Books',
+                  isCompleted: selCategoryIndex.value != 4,
+                  onTap: () {
+                    selCategoryIndex.value = 4;
+                  },
+                ),
+              ],
             ),
           ),
-          if (productData.length == 0) const NoData(),
-          GridView.builder(
+        ),
+        if (productData.length == 0) const NoData(),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: GridView.builder(
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 2,
-              childAspectRatio: 200.sp / 220.sp,
-              crossAxisSpacing: 8.sp,
-              mainAxisSpacing: 8.sp,
+              childAspectRatio: 200.sp / 230.sp,
+              crossAxisSpacing: 4.sp,
+              mainAxisSpacing: 4.sp,
             ),
             physics: const NeverScrollableScrollPhysics(),
             shrinkWrap: true,
@@ -114,20 +115,54 @@ class DashboardBody extends HookWidget {
                     ),
                   ),
                 ),
+                onLongPress: () {
+                  zoomImage(
+                    data['image'],
+                    context,
+                  );
+                },
                 child: Card(
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Image.network(
-                          data['image'],
-                          height: 70.h,
+                  child: Column(
+                    children: [
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: Container(
+                          clipBehavior: Clip.hardEdge,
+                          decoration: const BoxDecoration(
+                            color: AppConstant.red,
+                            borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(5.0),
+                              bottomRight: Radius.circular(12.0),
+                            ),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(4.0),
+                            child: Text(
+                              '10% off',
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .headline6!
+                                  .copyWith(
+                                    color: AppConstant.secondaryColor,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                            ),
+                          ),
                         ),
-                        SizedBox(
-                          height: 10.h,
-                        ),
-                        Text(
+                      ),
+                      SizedBox(
+                        height: 10.h,
+                      ),
+                      Image.network(
+                        data['image'],
+                        height: 70.h,
+                      ),
+                      SizedBox(
+                        height: 10.h,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                        child: Text(
                           data['title'],
                           overflow: TextOverflow.ellipsis,
                           textAlign: TextAlign.center,
@@ -136,67 +171,69 @@ class DashboardBody extends HookWidget {
                                     fontWeight: FontWeight.bold,
                                   ),
                         ),
-                        SizedBox(
-                          height: 5.h,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(
+                          top: 5,
+                          left: 8,
+                          right: 8,
                         ),
-                        Text(
-                          data['description'],
-                          overflow: TextOverflow.ellipsis,
-                          style: Theme.of(context).textTheme.subtitle1,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              '₹ ${(data['price'] * 10 / 9).toStringAsFixed(0)} ',
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .headline5!
+                                  .copyWith(
+                                    decoration: TextDecoration.lineThrough,
+                                  ),
+                            ),
+                            Text(
+                              '₹${data['price']}',
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .headline4!
+                                  .copyWith(
+                                    fontWeight: FontWeight.bold,
+                                    color: AppConstant.primaryColor,
+                                  ),
+                            ),
+                          ],
                         ),
-                        SizedBox(
-                          height: 5.h,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(
+                          top: 5,
+                          left: 8,
                         ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 4),
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            children: [
-                              Icon(
-                                Icons.star_rounded,
-                                color: AppConstant.subtitlecolor,
-                              ),
-                              Text(
-                                '${data['rating']}',
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .headline5!
-                                    .copyWith(
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                              ),
-                              const Spacer(),
-                              Text(
-                                '₹ 10 ',
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .headline5!
-                                    .copyWith(
-                                      decoration: TextDecoration.lineThrough,
-                                    ),
-                              ),
-                              Text(
-                                '₹${data['price']}',
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .headline3!
-                                    .copyWith(
-                                      fontWeight: FontWeight.bold,
-                                      color: AppConstant.primaryColor,
-                                    ),
-                              ),
-                            ],
-                          ),
+                        child: Row(
+                          children: [
+                            Icon(
+                              Icons.star_rounded,
+                              color: AppConstant.subtitlecolor,
+                            ),
+                            Text(
+                              '${data['rating']}',
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .headline5!
+                                  .copyWith(
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ),
               );
             },
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

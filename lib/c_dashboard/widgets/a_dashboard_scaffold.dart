@@ -43,8 +43,10 @@ class DashboardScaffold extends HookWidget {
                 ),
               );
             },
-            icon: const Icon(
-              Icons.favorite_rounded,
+            icon: Image.asset(
+              'assets/icons/heart.png',
+              height: 18.sp,
+              color: AppConstant.subtitlecolor,
             ),
           ),
           IconButton(
@@ -55,8 +57,10 @@ class DashboardScaffold extends HookWidget {
                 ),
               );
             },
-            icon: const Icon(
-              Icons.shopping_bag_outlined,
+            icon: Image.asset(
+              'assets/icons/shopping-cart.png',
+              height: 18.sp,
+              color: AppConstant.subtitlecolor,
             ),
           ),
           IconButton(
@@ -66,8 +70,10 @@ class DashboardScaffold extends HookWidget {
                 delegate: CustomSearchDelegate(),
               );
             },
-            icon: const Icon(
-              Icons.search_rounded,
+            icon: Image.asset(
+              'assets/icons/search.png',
+              height: 18.sp,
+              color: AppConstant.subtitlecolor,
             ),
           ),
           SizedBox(

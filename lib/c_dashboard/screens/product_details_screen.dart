@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ekart/c_dashboard/screens/cart_screen.dart';
+import 'package:ekart/services/zoom_image.dart';
 import 'package:ekart/utils/app_constant.dart';
 import 'package:ekart/widgets/back_screen_button.dart';
 import 'package:ekart/widgets/custom_button.dart';
@@ -116,24 +117,46 @@ class ProductDetailsScreen extends HookWidget {
                 SizedBox(
                   height: 5.h,
                 ),
-                Text(
-                  title,
-                  overflow: TextOverflow.ellipsis,
-                  textAlign: TextAlign.left,
-                  style: Theme.of(context).textTheme.headline3!.copyWith(
-                        fontWeight: FontWeight.bold,
-                      ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      title,
+                      overflow: TextOverflow.ellipsis,
+                      textAlign: TextAlign.left,
+                      style: Theme.of(context).textTheme.headline3!.copyWith(
+                            fontWeight: FontWeight.bold,
+                          ),
+                    ),
+                    Text(
+                      '10% off',
+                      overflow: TextOverflow.ellipsis,
+                      textAlign: TextAlign.left,
+                      style: Theme.of(context).textTheme.headline5!.copyWith(
+                            fontWeight: FontWeight.bold,
+                            color: AppConstant.red,
+                          ),
+                    ),
+                  ],
                 ),
                 SizedBox(
                   height: 25.h,
                 ),
-                Center(
-                  child: CircleAvatar(
-                    radius: 80.r,
-                    backgroundColor: AppConstant.secondaryColor,
-                    child: Image.network(
+                GestureDetector(
+                  onLongPress: () {
+                    zoomImage(
                       image,
-                      width: 90.r,
+                      context,
+                    );
+                  },
+                  child: Center(
+                    child: CircleAvatar(
+                      radius: 80.r,
+                      backgroundColor: AppConstant.secondaryColor,
+                      child: Image.network(
+                        image,
+                        width: 90.r,
+                      ),
                     ),
                   ),
                 ),
@@ -168,7 +191,7 @@ class ProductDetailsScreen extends HookWidget {
                       ),
                       const Spacer(),
                       Text(
-                        '₹ 10 ',
+                        '₹ ${(price * 10 / 9).toStringAsFixed(0)} ',
                         style: Theme.of(context).textTheme.headline4!.copyWith(
                               decoration: TextDecoration.lineThrough,
                             ),
@@ -184,6 +207,20 @@ class ProductDetailsScreen extends HookWidget {
                   ),
                 ),
               ],
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(left: 12.0),
+            child: Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                'Only $availableStock item(s) left in stock',
+                style: Theme.of(context).textTheme.headline6!.copyWith(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 10.sp,
+                      color: AppConstant.subtitlecolor,
+                    ),
+              ),
             ),
           ),
           const Spacer(),
