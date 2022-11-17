@@ -4,10 +4,11 @@ import 'package:flutter/foundation.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
+FirebaseAuth auth = FirebaseAuth.instance;
+FirebaseFirestore fireRef = FirebaseFirestore.instance;
+
 class AuthenticationController {
   static Future<User?> signInWithGoogle() async {
-    FirebaseFirestore fireRef = FirebaseFirestore.instance;
-    FirebaseAuth auth = FirebaseAuth.instance;
     User? user;
     bool? isNewUser;
     final GoogleSignIn googleSignIn = GoogleSignIn();
@@ -38,8 +39,16 @@ class AuthenticationController {
               'displayName': user.displayName.toString(),
               'email': user.email.toString(),
               'photoURL': user.photoURL.toString(),
+              'phonoNo': '',
+              'address': '',
               'wishlist': [],
+              'isPhoneNoVerified': false,
+              'isEmailVerified': false,
             },
+          ).onError(
+            (error, stackTrace) => Fluttertoast.showToast(
+              msg: 'An error occured',
+            ),
           );
         }
       } on FirebaseAuthException catch (e) {
@@ -60,6 +69,94 @@ class AuthenticationController {
       }
     }
 
+    return user;
+  }
+
+  static Future<User?> createAccountWithEmail(
+    String userName,
+    String email,
+    String password,
+  ) async {
+    User? user;
+    try {
+      UserCredential userCredential = await auth.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+      user = userCredential.user;
+      user = auth.currentUser;
+      bool? isNewUser = userCredential.additionalUserInfo?.isNewUser;
+      if (isNewUser!) {
+        await fireRef.collection("user").doc(userCredential.user!.email).set(
+          {
+            'displayName': userName,
+            'email': email,
+            'photoURL': '',
+            'phonoNo': '',
+            'address': '',
+            'wishlist': [],
+            'isPhoneNoVerified': false,
+            'isEmailVerified': false,
+          },
+        ).onError(
+          (error, stackTrace) => Fluttertoast.showToast(
+            msg: 'An error occured',
+          ),
+        );
+      }
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'weak-password') {
+        Fluttertoast.showToast(
+          msg: 'The password provided is too weak',
+        );
+      } else if (e.code == 'email-already-in-use') {
+        Fluttertoast.showToast(
+          msg: 'The account already exists for that email',
+        );
+      } else {
+        Fluttertoast.showToast(
+          msg: e.code.toString(),
+        );
+      }
+    } catch (e) {
+      Fluttertoast.showToast(
+        msg: e.toString(),
+      );
+    }
+    return user;
+  }
+
+  static Future<User?> loginWithEmail(
+    String email,
+    String password,
+  ) async {
+    User? user;
+
+    try {
+      UserCredential userCredential = await auth.signInWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+      user = userCredential.user;
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'user-not-found') {
+        Fluttertoast.showToast(
+          msg: 'No user found for that email',
+        );
+      } else if (e.code == 'wrong-password') {
+        Fluttertoast.showToast(
+          msg: 'Wrong password provided',
+        );
+      } else {
+        Fluttertoast.showToast(
+          msg: e.code.toString(),
+        );
+      }
+    } catch (e) {
+      Fluttertoast.showToast(
+        msg: e.toString(),
+      );
+    }
     return user;
   }
 

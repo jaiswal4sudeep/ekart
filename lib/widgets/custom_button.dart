@@ -78,3 +78,34 @@ class GradientButton extends StatelessWidget {
     );
   }
 }
+
+class CustomTextButton extends StatelessWidget {
+  const CustomTextButton({
+    Key? key,
+    required this.onPressed,
+    required this.title,
+  }) : super(key: key);
+
+  final void Function()? onPressed;
+  final String title;
+  @override
+  Widget build(BuildContext context) {
+    return TextButton(
+      onPressed: onPressed,
+      style: TextButton.styleFrom(
+        foregroundColor: AppConstant.primaryColor,
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Text(
+          title,
+          style: Theme.of(context).textTheme.headline5!.copyWith(
+                color: AppConstant.primaryColor,
+                fontWeight: FontWeight.w700,
+                letterSpacing: 1.2,
+              ),
+        ),
+      ),
+    );
+  }
+}

@@ -166,21 +166,24 @@ class ProductDetailsScreen extends HookWidget {
                 SizedBox(
                   height: 25.h,
                 ),
-                GestureDetector(
-                  onLongPress: () {
-                    zoomImage(
-                      image,
-                      context,
-                    );
-                  },
-                  child: Center(
-                    child: CircleAvatar(
-                      radius: 80.r,
-                      backgroundColor: AppConstant.secondaryColor,
-                      child: Image.network(
+                Hero(
+                  tag: image,
+                  child: GestureDetector(
+                    onLongPress: () {
+                      zoomImage(
                         image,
-                        width: 120.r,
-                        height: 120.r,
+                        context,
+                      );
+                    },
+                    child: Center(
+                      child: CircleAvatar(
+                        radius: 80.r,
+                        backgroundColor: AppConstant.secondaryColor,
+                        child: Image.network(
+                          image,
+                          width: 120.r,
+                          height: 120.r,
+                        ),
                       ),
                     ),
                   ),

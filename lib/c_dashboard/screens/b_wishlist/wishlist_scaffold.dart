@@ -71,10 +71,14 @@ class WishlistScaffold extends HookWidget {
                           },
                           child: Card(
                             child: ListTile(
-                              leading: Image.network(
-                                data['image'],
-                                height: 40.sp,
-                                width: 40.sp,
+                              leading: Hero(
+                                tag: data['image'],
+                                transitionOnUserGestures: true,
+                                child: Image.network(
+                                  data['image'],
+                                  height: 40.sp,
+                                  width: 40.sp,
+                                ),
                               ),
                               title: Text(
                                 data['title'],

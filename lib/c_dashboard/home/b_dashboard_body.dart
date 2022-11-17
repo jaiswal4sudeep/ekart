@@ -159,9 +159,13 @@ class DashboardBody extends HookWidget {
                       SizedBox(
                         height: 10.h,
                       ),
-                      Image.network(
-                        data['image'],
-                        height: 70.h,
+                      Hero(
+                        tag: data['image'],
+                        transitionOnUserGestures: true,
+                        child: Image.network(
+                          data['image'],
+                          height: 70.h,
+                        ),
                       ),
                       SizedBox(
                         height: 10.h,
