@@ -1,4 +1,5 @@
 import 'package:ekart/widgets/back_screen_button.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
@@ -8,9 +9,10 @@ class PaymentDetailsScreen extends HookWidget {
     required this.email,
   });
   final String email;
-  
+
   @override
   Widget build(BuildContext context) {
+    User? user = FirebaseAuth.instance.currentUser;
     final userName = useState<String?>('');
     final userEmail = useState<String?>('');
     final userIsEmailVerified = useState<bool?>(false);
@@ -21,7 +23,7 @@ class PaymentDetailsScreen extends HookWidget {
     fetchData() {
       // userName.value = user?.displayName!.toString();
       // userEmail.value = user?.email!.toString();
-      // userIsEmailVerified.value = user?.emailVerified;
+      userIsEmailVerified.value = user?.emailVerified;
       // userPhoto.value = user?.photoURL!.toString();
       // userPhoneNo.value = user?.photoURL!.toString();
     }
@@ -40,7 +42,9 @@ class PaymentDetailsScreen extends HookWidget {
       ),
       body: ListView(
         physics: const BouncingScrollPhysics(),
-        children: const [],
+        children: [
+          Text(userIsEmailVerified.value.toString()),
+        ],
       ),
     );
   }

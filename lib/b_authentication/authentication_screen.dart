@@ -16,7 +16,8 @@ class AuthenticationScreen extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isLoading = useState<bool>(false);
+    final isGoogleLoading = useState<bool>(false);
+    final isEmailLoading = useState<bool>(false);
     final navigator = Navigator.of(context);
     final userName = useTextEditingController();
     final userEmail = useTextEditingController();
@@ -27,224 +28,285 @@ class AuthenticationScreen extends HookWidget {
     final isLoginScreen = useState<bool>(true);
 
     return Scaffold(
-      body: Column(
-        children: [
-          !isLoginScreen.value
-              ? Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: CustomTextFormField(
-                    controller: userName,
-                    labelText: 'Name',
-                    textInputType: TextInputType.name,
-                    validator: (value) {
-                      if (value == null || value.trim().isEmpty) {
-                        return 'Please enter your name';
-                      }
-                      if (value.trim().length < 4) {
-                        return 'Username must be at least 4 characters';
-                      }
-                      return null;
-                    },
-                  ),
-                )
-              : const SizedBox(),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: CustomTextFormField(
-              controller: userEmail,
-              labelText: 'E-Mail',
-              textInputType: TextInputType.emailAddress,
-              validator: (value) {
-                if (value == null || value.trim().isEmpty) {
-                  return 'Please enter your email address';
-                }
-                if (!RegExp(r'\S+@\S+\.\S+').hasMatch(value)) {
-                  return 'Please enter a valid email address';
-                }
-                return null;
-              },
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: CustomTextFormField(
-              controller: password,
-              labelText: 'Password',
-              textInputType: TextInputType.visiblePassword,
-              textInputAction: isLoginScreen.value
-                  ? TextInputAction.done
-                  : TextInputAction.next,
-              isPassword: isPassHidden.value,
-              suffixIcon: IconButton(
-                onPressed: () {
-                  isPassHidden.value = !isPassHidden.value;
-                },
-                icon: isPassHidden.value
-                    ? const Icon(Icons.visibility_rounded)
-                    : const Icon(
-                        Icons.visibility_off_rounded,
-                      ),
-                color: AppConstant.subtitlecolor,
-              ),
-              validator: (value) {
-                if (value == null || value.trim().isEmpty) {
-                  return 'Please enter the password';
-                }
-                if (value.trim().length < 6) {
-                  return 'Password must be at least 6 characters';
-                }
-                return null;
-              },
-            ),
-          ),
-          !isLoginScreen.value
-              ? Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: CustomTextFormField(
-                    controller: confirmPassword,
-                    labelText: 'Confirm Password',
-                    textInputAction: TextInputAction.done,
-                    textInputType: TextInputType.visiblePassword,
-                    isPassword: isPassHidden.value,
-                    suffixIcon: IconButton(
-                      onPressed: () {
-                        isPassHidden.value = !isPassHidden.value;
-                      },
-                      icon: isPassHidden.value
-                          ? const Icon(Icons.visibility_rounded)
-                          : const Icon(
-                              Icons.visibility_off_rounded,
-                            ),
-                      color: AppConstant.subtitlecolor,
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 12.0),
+          child: Form(
+            key: authKey,
+            child: ListView(
+              physics: const BouncingScrollPhysics(),
+              children: [
+                SizedBox(
+                  height: 30.h,
+                ),
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: CircleAvatar(
+                    radius: 25.r,
+                    backgroundColor: AppConstant.primaryColor.withOpacity(0.1),
+                    child: Image.asset(
+                      'assets/icons/appLogo.png',
+                      width: 35.r,
+                      fit: BoxFit.fitHeight,
                     ),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'This field is required';
-                      }
-
-                      if (value != password.text) {
-                        return 'Password does not match';
-                      }
-
-                      return null;
-                    },
                   ),
-                )
-              : const SizedBox(),
-          SizedBox(
-            height: 20.h,
-          ),
-          SizedBox(
-            width: 0.85.sw,
-            height: 40.h,
-            child: GradientButton(
-              onTap: () async {
-                if (authKey.currentState!.validate()) {
-                  User? user = isLoginScreen.value
-                      ? await AuthenticationController.loginWithEmail(
-                          userEmail.text.trim(),
-                          password.text.trim(),
-                        )
-                      : await AuthenticationController.createAccountWithEmail(
-                          userName.text.trim(),
-                          userEmail.text.trim(),
-                          password.text.trim(),
-                        );
+                ),
+                SizedBox(
+                  height: 10.h,
+                ),
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    isLoginScreen.value ? 'Login' : 'Register',
+                    style: Theme.of(context).textTheme.headline1!.copyWith(
+                          fontWeight: FontWeight.bold,
+                        ),
+                  ),
+                ),
+                SizedBox(
+                  height: 10.h,
+                ),
+                if (!isLoginScreen.value)
+                  Center(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: CustomTextFormField(
+                        controller: userName,
+                        labelText: 'Name',
+                        textInputType: TextInputType.name,
+                        validator: (value) {
+                          if (value == null || value.trim().isEmpty) {
+                            return 'Please enter your name';
+                          }
+                          if (value.trim().length < 4) {
+                            return 'Username must be at least 4 characters';
+                          }
+                          return null;
+                        },
+                      ),
+                    ),
+                  ),
+                Center(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: CustomTextFormField(
+                      controller: userEmail,
+                      labelText: 'E-Mail',
+                      textInputType: TextInputType.emailAddress,
+                      validator: (value) {
+                        if (value == null || value.trim().isEmpty) {
+                          return 'Please enter your email address';
+                        }
+                        if (!RegExp(r'\S+@\S+\.\S+').hasMatch(value)) {
+                          return 'Please enter a valid email address';
+                        }
+                        return null;
+                      },
+                    ),
+                  ),
+                ),
+                Center(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: CustomTextFormField(
+                      controller: password,
+                      labelText: 'Password',
+                      textInputType: TextInputType.visiblePassword,
+                      textInputAction: isLoginScreen.value
+                          ? TextInputAction.done
+                          : TextInputAction.next,
+                      isPassword: isPassHidden.value,
+                      suffixIcon: IconButton(
+                        onPressed: () {
+                          isPassHidden.value = !isPassHidden.value;
+                        },
+                        icon: isPassHidden.value
+                            ? const Icon(Icons.visibility_rounded)
+                            : const Icon(
+                                Icons.visibility_off_rounded,
+                              ),
+                        color: AppConstant.subtitlecolor,
+                      ),
+                      validator: (value) {
+                        if (value == null || value.trim().isEmpty) {
+                          return 'Please enter the password';
+                        }
+                        if (value.trim().length < 6) {
+                          return 'Password must be at least 6 characters';
+                        }
+                        return null;
+                      },
+                    ),
+                  ),
+                ),
+                if (!isLoginScreen.value)
+                  Center(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: CustomTextFormField(
+                        controller: confirmPassword,
+                        labelText: 'Confirm Password',
+                        textInputAction: TextInputAction.done,
+                        textInputType: TextInputType.visiblePassword,
+                        isPassword: isPassHidden.value,
+                        suffixIcon: IconButton(
+                          onPressed: () {
+                            isPassHidden.value = !isPassHidden.value;
+                          },
+                          icon: isPassHidden.value
+                              ? const Icon(Icons.visibility_rounded)
+                              : const Icon(
+                                  Icons.visibility_off_rounded,
+                                ),
+                          color: AppConstant.subtitlecolor,
+                        ),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter the password';
+                          }
 
-                  if (user != null) {
-                    navigator.pushReplacement(
-                      MaterialPageRoute(
-                        builder: (context) => DashboardScreen(
-                          email: userEmail.text,
+                          if (value != password.text) {
+                            return 'Password does not match';
+                          }
+
+                          return null;
+                        },
+                      ),
+                    ),
+                  ),
+                if (isLoginScreen.value)
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: CustomTextButton(
+                      onPressed: () {},
+                      title: 'Forgot password ?',
+                    ),
+                  ),
+                SizedBox(
+                  height: 5.h,
+                ),
+                Center(
+                  child: SizedBox(
+                    width: 0.85.sw,
+                    height: 40.h,
+                    child: GradientButton(
+                      isLaoding: isEmailLoading.value,
+                      onTap: () async {
+                        if (authKey.currentState!.validate()) {
+                          isEmailLoading.value = true;
+                          User? user = isLoginScreen.value
+                              ? await AuthenticationController.loginWithEmail(
+                                  userEmail.text.trim(),
+                                  password.text.trim(),
+                                )
+                              : await AuthenticationController
+                                  .createAccountWithEmail(
+                                  userName.text.trim(),
+                                  userEmail.text.trim(),
+                                  password.text.trim(),
+                                );
+
+                          isEmailLoading.value = false;
+
+                          if (user != null) {
+                            navigator.pushReplacement(
+                              MaterialPageRoute(
+                                builder: (context) => DashboardScreen(
+                                  email: userEmail.text,
+                                ),
+                              ),
+                            );
+                          }
+                        }
+                      },
+                      title: !isLoginScreen.value ? 'Register' : 'Login',
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: 10.h,
+                ),
+                Center(
+                  child: SizedBox(
+                    width: 0.85.sw,
+                    height: 40.h,
+                    child: CustomOutlinedButton(
+                      onPressed: () {
+                        isPassHidden.value = true;
+                        userName.clear();
+                        userEmail.clear();
+                        password.clear();
+                        confirmPassword.clear();
+                        isLoginScreen.value = !isLoginScreen.value;
+                      },
+                      title: !isLoginScreen.value ? 'Login' : 'Register',
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: 10.h,
+                ),
+                Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    const Center(
+                      child: CustomDivider(),
+                    ),
+                    Center(
+                      child: Container(
+                        color: AppConstant.backgroundColor,
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            'OR',
+                            style: Theme.of(context).textTheme.subtitle1,
+                          ),
                         ),
                       ),
-                    );
-                  }
-                }
-              },
-              title: !isLoginScreen.value ? 'Sign up' : 'Log in',
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              children: [
-                Text(
-                  !isLoginScreen.value
-                      ? 'Already have an account?'
-                      : 'Don\'t have an account?',
-                  style: Theme.of(context).textTheme.headline5,
+                    ),
+                  ],
                 ),
-                CustomTextButton(
-                  onPressed: () {
-                    isPassHidden.value = true;
-                    userName.clear();
-                    userEmail.clear();
-                    password.clear();
-                    confirmPassword.clear();
-                    isLoginScreen.value = !isLoginScreen.value;
-                  },
-                  title: !isLoginScreen.value ? 'Log in' : 'Sign up',
+                SizedBox(
+                  height: 10.h,
+                ),
+                Center(
+                  child: SizedBox(
+                    width: 0.85.sw,
+                    height: 40.h,
+                    child: Material(
+                      color: AppConstant.transparent,
+                      clipBehavior: Clip.hardEdge,
+                      child: GoogleButton(
+                        onTap: () async {
+                          isGoogleLoading.value = true;
+                          User? user =
+                              await AuthenticationController.signInWithGoogle();
+                          isGoogleLoading.value = false;
+                          if (user != null) {
+                            navigator.pushReplacement(
+                              MaterialPageRoute(
+                                builder: (context) => DashboardScreen(
+                                  email: user.email!,
+                                ),
+                              ),
+                            );
+                          }
+                        },
+                        title: 'Continue with Google',
+                        hvIcon: true,
+                        isLaoding: isGoogleLoading.value,
+                        icon: Image.asset(
+                          'assets/icons/google.png',
+                          height: 18.sp,
+                        ),
+                      ),
+                    ),
+                  ),
                 ),
               ],
             ),
           ),
-          Stack(
-            alignment: Alignment.center,
-            children: [
-              const Center(
-                child: CustomDivider(),
-              ),
-              Center(
-                child: Container(
-                  color: AppConstant.backgroundColor,
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                      'OR',
-                      style: Theme.of(context).textTheme.subtitle1,
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-          SizedBox(
-            height: 10.h,
-          ),
-          SizedBox(
-            width: 0.85.sw,
-            height: 40.h,
-            child: Material(
-              color: AppConstant.transparent,
-              clipBehavior: Clip.hardEdge,
-              child: GradientButton(
-                onTap: () async {
-                  isLoading.value = true;
-                  User? user =
-                      await AuthenticationController.signInWithGoogle();
-                  isLoading.value = false;
-                  if (user != null) {
-                    navigator.pushReplacement(
-                      MaterialPageRoute(
-                        builder: (context) => DashboardScreen(
-                          email: user.email!,
-                        ),
-                      ),
-                    );
-                  }
-                },
-                title: 'Continue with Google',
-                hvIcon: true,
-                isLaoding: isLoading.value,
-                icon: Image.asset(
-                  'assets/icons/google.png',
-                  height: 22.sp,
-                ),
-              ),
-            ),
-          ),
-        ],
+        ),
       ),
     );
   }
