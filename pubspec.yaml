@@ -26,6 +26,8 @@ dependencies:
   google_sign_in: ^5.4.2
   shimmer: ^2.0.0
   pay: ^1.0.11
+  image_picker: ^0.8.6
+  image_cropper: ^3.0.1
 
 dev_dependencies:
   flutter_test:

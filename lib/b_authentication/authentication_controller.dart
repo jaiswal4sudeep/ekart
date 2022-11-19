@@ -96,7 +96,7 @@ class AuthenticationController {
             'address': '',
             'wishlist': [],
             'isPhoneNoVerified': false,
-            'isEmailVerified': false,
+            'isEmailVerified': user!.emailVerified,
           },
         ).onError(
           (error, stackTrace) => Fluttertoast.showToast(
