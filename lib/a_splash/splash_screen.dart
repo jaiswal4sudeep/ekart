@@ -49,14 +49,10 @@ class SplashScreen extends HookWidget {
           ),
         ),
         Center(
-          child: CircleAvatar(
-            radius: 60.r,
-            backgroundColor: AppConstant.secondaryColor,
-            child: Image.asset(
-              'assets/icons/appLogo.png',
-              height: 60.sp,
-              fit: BoxFit.fitWidth,
-            ),
+          child: Image.asset(
+            'assets/icons/appLogo.png',
+            height: 100.r,
+            fit: BoxFit.fitWidth,
           ),
         ),
       ],

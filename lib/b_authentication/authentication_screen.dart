@@ -37,7 +37,7 @@ class AuthenticationScreen extends HookWidget {
               physics: const BouncingScrollPhysics(),
               children: [
                 SizedBox(
-                  height: 30.h,
+                  height: 60.h,
                 ),
                 Align(
                   alignment: Alignment.centerLeft,
@@ -72,14 +72,14 @@ class AuthenticationScreen extends HookWidget {
                       padding: const EdgeInsets.all(8.0),
                       child: CustomTextFormField(
                         controller: userName,
-                        labelText: 'Name',
+                        labelText: 'Full name',
                         textInputType: TextInputType.name,
                         validator: (value) {
                           if (value == null || value.trim().isEmpty) {
                             return 'Please enter your name';
                           }
                           if (value.trim().length < 4) {
-                            return 'Username must be at least 4 characters';
+                            return 'Name must be at least 4 characters';
                           }
                           return null;
                         },
@@ -224,7 +224,7 @@ class AuthenticationScreen extends HookWidget {
                   ),
                 ),
                 SizedBox(
-                  height: 10.h,
+                  height: 15.h,
                 ),
                 Center(
                   child: SizedBox(

@@ -47,7 +47,7 @@ class DashboardDrawer extends StatelessWidget {
                     ? Image.asset(
                         'assets/icons/user.png',
                         color: AppConstant.backgroundColor.withOpacity(0.8),
-                        height: 20.sp,
+                        height: 30.sp,
                         fit: BoxFit.fitWidth,
                       )
                     : null,
@@ -73,11 +73,7 @@ class DashboardDrawer extends StatelessWidget {
                     ),
                   );
                 },
-                icon: Image.asset(
-                  'assets/icons/user-avatar.png',
-                  height: 25.sp,
-                  color: AppConstant.subtitlecolor,
-                ),
+                imagePath: 'assets/icons/user-avatar.png',
                 title: 'Personal details',
               ),
               CustomListTile(
@@ -92,11 +88,7 @@ class DashboardDrawer extends StatelessWidget {
                     ),
                   );
                 },
-                icon: Image.asset(
-                  'assets/icons/heart.png',
-                  height: 20.sp,
-                  color: AppConstant.subtitlecolor,
-                ),
+                imagePath: 'assets/icons/heart.png',
                 title: 'Wishlist',
               ),
               CustomListTile(
@@ -110,11 +102,7 @@ class DashboardDrawer extends StatelessWidget {
                     ),
                   );
                 },
-                icon: Image.asset(
-                  'assets/icons/shopping-cart.png',
-                  height: 20.sp,
-                  color: AppConstant.subtitlecolor,
-                ),
+                imagePath: 'assets/icons/shopping-cart.png',
                 title: 'Cart',
               ),
               CustomListTile(
@@ -126,11 +114,7 @@ class DashboardDrawer extends StatelessWidget {
                     ),
                   );
                 },
-                icon: Image.asset(
-                  'assets/icons/tracking.png',
-                  height: 25.sp,
-                  color: AppConstant.subtitlecolor,
-                ),
+                imagePath: 'assets/icons/tracking.png',
                 title: 'Order history',
               ),
               const Spacer(),
@@ -149,11 +133,7 @@ class DashboardDrawer extends StatelessWidget {
                       ),
                     );
                   },
-                  icon: Image.asset(
-                    'assets/icons/logout.png',
-                    height: 20.sp,
-                    color: AppConstant.subtitlecolor,
-                  ),
+                  imagePath: 'assets/icons/logout.png',
                   title: 'Log out',
                 ),
               ),

@@ -82,8 +82,8 @@ class ShimmerGridTile extends StatelessWidget {
             height: 10.h,
           ),
           ShimmerContainer(
-            width: 65.h,
-            height: 65.h,
+            width: 70.h,
+            height: 70.h,
           ),
           SizedBox(
             height: 10.h,

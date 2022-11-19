@@ -4,6 +4,7 @@ import 'package:ekart/c_dashboard/screens/product_details_screen.dart';
 import 'package:ekart/widgets/back_screen_button.dart';
 import 'package:ekart/widgets/error_screen.dart';
 import 'package:ekart/widgets/no_data.dart';
+import 'package:ekart/widgets/shimmer_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -76,6 +77,21 @@ class WishlistScaffold extends HookWidget {
                                 transitionOnUserGestures: true,
                                 child: Image.network(
                                   data['image'],
+                                  loadingBuilder:
+                                      (context, child, loadingProgress) {
+                                    if (loadingProgress == null) return child;
+                                    return ShimmerContainer(
+                                      width: 40.h,
+                                      height: 40.h,
+                                    );
+                                  },
+                                  errorBuilder: (context, error, stackTrace) {
+                                    return const ImageErrorBuilder(
+                                      containerW: 40,
+                                      containerH: 40,
+                                      imageSize: 20,
+                                    );
+                                  },
                                   height: 40.sp,
                                   width: 40.sp,
                                 ),

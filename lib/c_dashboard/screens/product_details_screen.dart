@@ -4,6 +4,8 @@ import 'package:ekart/services/zoom_image.dart';
 import 'package:ekart/utils/app_constant.dart';
 import 'package:ekart/widgets/back_screen_button.dart';
 import 'package:ekart/widgets/custom_button.dart';
+import 'package:ekart/widgets/no_data.dart';
+import 'package:ekart/widgets/shimmer_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -181,6 +183,20 @@ class ProductDetailsScreen extends HookWidget {
                         backgroundColor: AppConstant.secondaryColor,
                         child: Image.network(
                           image,
+                          loadingBuilder: (context, child, loadingProgress) {
+                            if (loadingProgress == null) return child;
+                            return ShimmerContainer(
+                              width: 120.r,
+                              height: 120.r,
+                            );
+                          },
+                          errorBuilder: (context, error, stackTrace) {
+                            return const ImageErrorBuilder(
+                              containerW: 140,
+                              containerH: 140,
+                              imageSize: 50,
+                            );
+                          },
                           width: 120.r,
                           height: 120.r,
                         ),

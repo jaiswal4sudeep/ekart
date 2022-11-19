@@ -39,11 +39,11 @@ class AuthenticationController {
               'displayName': user.displayName.toString(),
               'email': user.email.toString(),
               'photoURL': user.photoURL.toString(),
-              'phonoNo': '',
+              'phoneNo': '',
               'address': '',
               'wishlist': [],
               'isPhoneNoVerified': false,
-              'isEmailVerified': false,
+              'isEmailVerified': user.emailVerified,
             },
           ).onError(
             (error, stackTrace) => Fluttertoast.showToast(
@@ -92,7 +92,7 @@ class AuthenticationController {
             'displayName': userName,
             'email': email,
             'photoURL': '',
-            'phonoNo': '',
+            'phoneNo': '',
             'address': '',
             'wishlist': [],
             'isPhoneNoVerified': false,
