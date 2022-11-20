@@ -69,6 +69,12 @@ class DashboardDrawer extends StatelessWidget {
                     MaterialPageRoute(
                       builder: (context) => PaymentDetailsScreen(
                         email: email,
+                        userNameS: userData['displayName'],
+                        userPhoneNoS: userData['phoneNo'],
+                        userAddressS: userData['address'],
+                        userPhotoS: userData['photoURL'],
+                        userIsEmailVerifiedS: userData['isEmailVerified'],
+                        userIsPhoneVerifiedS: userData['isPhoneNoVerified'],
                       ),
                     ),
                   );
