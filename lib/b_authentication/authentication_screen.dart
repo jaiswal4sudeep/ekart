@@ -25,7 +25,8 @@ class AuthenticationScreen extends HookWidget {
     final confirmPassword = useTextEditingController();
     final isPassHidden = useState<bool>(true);
     final authKey = GlobalKey<FormState>();
-    final isLoginScreen = useState<bool>(true);
+    final doesUserExist = useState<bool>(false);
+    final isEmailPage = useState<bool>(true);
 
     return Scaffold(
       body: SafeArea(
@@ -34,8 +35,40 @@ class AuthenticationScreen extends HookWidget {
           child: Form(
             key: authKey,
             child: ListView(
+              shrinkWrap: true,
               physics: const BouncingScrollPhysics(),
               children: [
+                SizedBox(
+                  height: 10.h,
+                ),
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: !isEmailPage.value
+                      ? SizedBox(
+                          width: 30.sp,
+                          height: 30.sp,
+                          child: Center(
+                            child: IconButton(
+                              padding: EdgeInsets.zero,
+                              onPressed: () {
+                                isEmailPage.value = true;
+                                userName.clear();
+                                password.clear();
+                                confirmPassword.clear();
+                                isPassHidden.value = true;
+                                doesUserExist.value = false;
+                              },
+                              icon: const Icon(
+                                Icons.keyboard_arrow_left_rounded,
+                              ),
+                            ),
+                          ),
+                        )
+                      : SizedBox(
+                          width: 30.sp,
+                          height: 30.sp,
+                        ),
+                ),
                 SizedBox(
                   height: 60.h,
                 ),
@@ -57,7 +90,7 @@ class AuthenticationScreen extends HookWidget {
                 Align(
                   alignment: Alignment.centerLeft,
                   child: Text(
-                    isLoginScreen.value ? 'Login' : 'Register',
+                    'Welcome',
                     style: Theme.of(context).textTheme.headline1!.copyWith(
                           fontWeight: FontWeight.bold,
                         ),
@@ -66,29 +99,8 @@ class AuthenticationScreen extends HookWidget {
                 SizedBox(
                   height: 10.h,
                 ),
-                if (!isLoginScreen.value)
+                if (isEmailPage.value)
                   Center(
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: CustomTextFormField(
-                        controller: userName,
-                        labelText: 'Full name',
-                        textInputType: TextInputType.name,
-                        validator: (value) {
-                          if (value == null || value.trim().isEmpty) {
-                            return 'Please enter your name';
-                          }
-                          if (value.trim().length < 4) {
-                            return 'Name must be at least 4 characters';
-                          }
-                          return null;
-                        },
-                      ),
-                    ),
-                  ),
-                Center(
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
                     child: CustomTextFormField(
                       controller: userEmail,
                       labelText: 'E-Mail',
@@ -104,17 +116,30 @@ class AuthenticationScreen extends HookWidget {
                       },
                     ),
                   ),
-                ),
-                Center(
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
+                if (!doesUserExist.value && !isEmailPage.value)
+                  Center(
+                    child: CustomTextFormField(
+                      controller: userName,
+                      labelText: 'Full name',
+                      textInputType: TextInputType.name,
+                      validator: (value) {
+                        if (value == null || value.trim().isEmpty) {
+                          return 'Please enter your name';
+                        }
+                        if (value.trim().length < 4) {
+                          return 'Name must be at least 4 characters';
+                        }
+                        return null;
+                      },
+                    ),
+                  ),
+                if (!isEmailPage.value)
+                  Center(
                     child: CustomTextFormField(
                       controller: password,
                       labelText: 'Password',
                       textInputType: TextInputType.visiblePassword,
-                      textInputAction: isLoginScreen.value
-                          ? TextInputAction.done
-                          : TextInputAction.next,
+                      textInputAction: TextInputAction.next,
                       isPassword: isPassHidden.value,
                       suffixIcon: IconButton(
                         onPressed: () {
@@ -138,43 +163,7 @@ class AuthenticationScreen extends HookWidget {
                       },
                     ),
                   ),
-                ),
-                if (!isLoginScreen.value)
-                  Center(
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: CustomTextFormField(
-                        controller: confirmPassword,
-                        labelText: 'Confirm Password',
-                        textInputAction: TextInputAction.done,
-                        textInputType: TextInputType.visiblePassword,
-                        isPassword: isPassHidden.value,
-                        suffixIcon: IconButton(
-                          onPressed: () {
-                            isPassHidden.value = !isPassHidden.value;
-                          },
-                          icon: isPassHidden.value
-                              ? const Icon(Icons.visibility_rounded)
-                              : const Icon(
-                                  Icons.visibility_off_rounded,
-                                ),
-                          color: AppConstant.subtitlecolor,
-                        ),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter the password';
-                          }
-
-                          if (value != password.text) {
-                            return 'Password does not match';
-                          }
-
-                          return null;
-                        },
-                      ),
-                    ),
-                  ),
-                if (isLoginScreen.value)
+                if (doesUserExist.value && !isEmailPage.value)
                   Align(
                     alignment: Alignment.centerRight,
                     child: CustomTextButton(
@@ -182,8 +171,38 @@ class AuthenticationScreen extends HookWidget {
                       title: 'Forgot password ?',
                     ),
                   ),
+                if (!doesUserExist.value && !isEmailPage.value)
+                  Center(
+                    child: CustomTextFormField(
+                      controller: confirmPassword,
+                      labelText: 'Confirm Password',
+                      textInputAction: TextInputAction.done,
+                      textInputType: TextInputType.visiblePassword,
+                      isPassword: isPassHidden.value,
+                      suffixIcon: IconButton(
+                        onPressed: () {
+                          isPassHidden.value = !isPassHidden.value;
+                        },
+                        icon: isPassHidden.value
+                            ? const Icon(Icons.visibility_rounded)
+                            : const Icon(
+                                Icons.visibility_off_rounded,
+                              ),
+                        color: AppConstant.subtitlecolor,
+                      ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter the password';
+                        }
+                        if (value != password.text) {
+                          return 'Password does not match';
+                        }
+                        return null;
+                      },
+                    ),
+                  ),
                 SizedBox(
-                  height: 5.h,
+                  height: 20.h,
                 ),
                 Center(
                   child: SizedBox(
@@ -193,53 +212,49 @@ class AuthenticationScreen extends HookWidget {
                       isLaoding: isEmailLoading.value,
                       onTap: () async {
                         if (authKey.currentState!.validate()) {
-                          isEmailLoading.value = true;
-                          User? user = isLoginScreen.value
-                              ? await AuthenticationController.loginWithEmail(
-                                  userEmail.text.trim(),
-                                  password.text.trim(),
-                                )
-                              : await AuthenticationController
-                                  .createAccountWithEmail(
-                                  userName.text.trim(),
-                                  userEmail.text.trim(),
-                                  password.text.trim(),
-                                );
-
-                          isEmailLoading.value = false;
-
-                          if (user != null) {
-                            navigator.pushReplacement(
-                              MaterialPageRoute(
-                                builder: (context) => DashboardScreen(
-                                  email: userEmail.text,
-                                ),
-                              ),
+                          if (isEmailPage.value) {
+                            isEmailLoading.value = true;
+                            doesUserExist.value = await AuthenticationController
+                                .checkDoesUserExist(
+                              userEmail.text,
                             );
+                            isEmailPage.value = false;
+                            isEmailLoading.value = false;
+                          } else if (!isEmailPage.value) {
+                            isEmailLoading.value = true;
+                            User? user;
+                            if (doesUserExist.value) {
+                              user =
+                                  await AuthenticationController.loginWithEmail(
+                                userEmail.text.trim(),
+                                password.text.trim(),
+                              );
+                            } else {
+                              user = await AuthenticationController
+                                  .createAccountWithEmail(
+                                userName.text.trim(),
+                                userEmail.text.trim(),
+                                password.text.trim(),
+                              );
+                            }
+                            isEmailLoading.value = false;
+                            if (user != null) {
+                              navigator.pushReplacement(
+                                MaterialPageRoute(
+                                  builder: (context) => DashboardScreen(
+                                    email: userEmail.text,
+                                  ),
+                                ),
+                              );
+                            }
                           }
                         }
                       },
-                      title: !isLoginScreen.value ? 'Register' : 'Login',
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  height: 15.h,
-                ),
-                Center(
-                  child: SizedBox(
-                    width: 0.85.sw,
-                    height: 40.h,
-                    child: CustomOutlinedButton(
-                      onPressed: () {
-                        isPassHidden.value = true;
-                        userName.clear();
-                        userEmail.clear();
-                        password.clear();
-                        confirmPassword.clear();
-                        isLoginScreen.value = !isLoginScreen.value;
-                      },
-                      title: !isLoginScreen.value ? 'Login' : 'Register',
+                      title: isEmailPage.value
+                          ? 'Continue'
+                          : doesUserExist.value
+                              ? 'Log in'
+                              : 'Sign up',
                     ),
                   ),
                 ),

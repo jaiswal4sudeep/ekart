@@ -174,4 +174,17 @@ class AuthenticationController {
       );
     }
   }
+
+  static Future<bool> checkDoesUserExist(
+    String email,
+  ) async {
+    bool doesExist = await fireRef
+        .collection('user')
+        .where('email', isEqualTo: email)
+        .get()
+        .then(
+          (value) => value.size > 0 ? true : false,
+        );
+    return doesExist;
+  }
 }

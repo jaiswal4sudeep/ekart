@@ -47,8 +47,8 @@ class _PaymentDetailsScreenState extends State<PaymentDetailsScreen> {
   bool isPhoneTimerStarted = false;
   bool userIsPhoneVerified = false;
   bool userIsEmailVerified = false;
-  int countDownSecEmail = 5;
-  int countDownSecPhone = 5;
+  int countDownSecEmail = 59;
+  int countDownSecPhone = 59;
   final detailsKey = GlobalKey<FormState>();
   final validatePhoneNo = GlobalKey<FormState>();
   final FirebaseAuth fireAuth = FirebaseAuth.instance;
@@ -91,7 +91,7 @@ class _PaymentDetailsScreenState extends State<PaymentDetailsScreen> {
         if (countDownSecEmail == 0) {
           setState(() {
             emailCountDownTimer.cancel();
-            countDownSecEmail = 5;
+            countDownSecEmail = 59;
             isEmailTimerStarted = false;
           });
         } else {
@@ -114,6 +114,7 @@ class _PaymentDetailsScreenState extends State<PaymentDetailsScreen> {
         if (countDownSecPhone == 0) {
           setState(() {
             phoneCountDownTimer.cancel();
+            countDownSecEmail = 59;
             isPhoneTimerStarted = false;
           });
         } else {
@@ -435,9 +436,10 @@ class _PaymentDetailsScreenState extends State<PaymentDetailsScreen> {
                 child: CustomOutlinedButton(
                   isLaoding: isLoading,
                   onPressed: () {
-                    if (detailsKey.currentState!.validate() &&
-                        validatePhoneNo.currentState!.validate()) {
-                      updateUserDetails();
+                    if (validatePhoneNo.currentState!.validate()) {
+                      if (detailsKey.currentState!.validate()) {
+                        updateUserDetails();
+                      }
                     }
                   },
                   title: 'Save',
@@ -452,14 +454,4 @@ class _PaymentDetailsScreenState extends State<PaymentDetailsScreen> {
       ),
     );
   }
-}
-
-void updateMailVerifiy(
-  FirebaseFirestore fireRef,
-  FirebaseAuth fireAuth,
-  String email,
-) {
-  fireRef.collection('users').doc(email).update({
-    'isEmailVerified': fireAuth.currentUser!.emailVerified,
-  });
 }
