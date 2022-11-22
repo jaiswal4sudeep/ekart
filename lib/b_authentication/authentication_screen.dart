@@ -261,26 +261,7 @@ class AuthenticationScreen extends HookWidget {
                 SizedBox(
                   height: 10.h,
                 ),
-                Stack(
-                  alignment: Alignment.center,
-                  children: [
-                    const Center(
-                      child: CustomDivider(),
-                    ),
-                    Center(
-                      child: Container(
-                        color: AppConstant.backgroundColor,
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(
-                            'OR',
-                            style: Theme.of(context).textTheme.subtitle1,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
+                const OrDivider(),
                 SizedBox(
                   height: 10.h,
                 ),

@@ -230,6 +230,7 @@ class CustomTextButton extends StatelessWidget {
 
   final void Function()? onPressed;
   final String title;
+
   @override
   Widget build(BuildContext context) {
     return TextButton(
@@ -246,6 +247,63 @@ class CustomTextButton extends StatelessWidget {
                 fontWeight: FontWeight.w700,
                 letterSpacing: 1.2,
               ),
+        ),
+      ),
+    );
+  }
+}
+
+class CustomElevatedButton extends StatelessWidget {
+  const CustomElevatedButton({
+    Key? key,
+    required this.onTap,
+    required this.title,
+    this.isLaoding = false,
+    this.hvIcon = false,
+    this.icon,
+  }) : super(key: key);
+
+  final Function() onTap;
+  final String title;
+  final bool? isLaoding;
+  final bool? hvIcon;
+  final Widget? icon;
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      borderRadius: BorderRadius.circular(8),
+      clipBehavior: Clip.hardEdge,
+      color: AppConstant.subtitlecolor,
+      child: InkWell(
+        onTap: !isLaoding! ? onTap : null,
+        child: Center(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              if (isLaoding!)
+                LoadingAnimationWidget.dotsTriangle(
+                  color: AppConstant.backgroundColor,
+                  size: 20.sp,
+                ),
+              if (isLaoding!)
+                SizedBox(
+                  width: 10.w,
+                ),
+              if (hvIcon! && !isLaoding!) icon!,
+              if (hvIcon! && !isLaoding!)
+                SizedBox(
+                  width: 10.w,
+                ),
+              Text(
+                isLaoding! ? 'Please wait' : title,
+                textAlign: TextAlign.center,
+                style: Theme.of(context).textTheme.headline5!.copyWith(
+                      color: AppConstant.backgroundColor,
+                    ),
+              ),
+            ],
+          ),
         ),
       ),
     );

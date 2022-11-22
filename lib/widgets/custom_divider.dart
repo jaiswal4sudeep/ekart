@@ -28,3 +28,33 @@ class CustomDivider extends StatelessWidget {
     );
   }
 }
+
+class OrDivider extends StatelessWidget {
+  const OrDivider({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      alignment: Alignment.center,
+      children: [
+        const Center(
+          child: CustomDivider(),
+        ),
+        Center(
+          child: Container(
+            color: AppConstant.backgroundColor,
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                'OR',
+                style: Theme.of(context).textTheme.subtitle1,
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}

@@ -15,6 +15,7 @@ class CustomTextFormField extends StatelessWidget {
     this.suffixIcon,
     this.readOnly = false,
     this.inputFormatters,
+    this.minLines = 1,
   }) : super(key: key);
 
   final TextEditingController controller;
@@ -26,6 +27,7 @@ class CustomTextFormField extends StatelessWidget {
   final Widget? suffixIcon;
   final bool? readOnly;
   final List<TextInputFormatter>? inputFormatters;
+  final int? minLines;
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +41,7 @@ class CustomTextFormField extends StatelessWidget {
               ),
         ),
         SizedBox(
-          height: 5.h,
+          height: 8.h,
         ),
         TextFormField(
           controller: controller,
@@ -51,6 +53,8 @@ class CustomTextFormField extends StatelessWidget {
           readOnly: readOnly!,
           obscureText: isPassword!,
           inputFormatters: inputFormatters,
+          minLines: minLines,
+          maxLines: minLines != 1 ? null : 1,
           decoration: InputDecoration(
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(8),
@@ -69,7 +73,7 @@ class CustomTextFormField extends StatelessWidget {
           validator: validator,
         ),
         SizedBox(
-          height: 5.h,
+          height: 8.h,
         ),
       ],
     );

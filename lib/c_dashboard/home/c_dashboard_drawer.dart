@@ -3,7 +3,7 @@ import 'package:ekart/b_authentication/authentication_screen.dart';
 import 'package:ekart/c_dashboard/screens/b_wishlist/wishlist_screen.dart';
 import 'package:ekart/c_dashboard/screens/cart/cart_screen.dart';
 import 'package:ekart/c_dashboard/screens/order_history_screen.dart';
-import 'package:ekart/c_dashboard/screens/a_personal_details/personal_details_screen.dart';
+import 'package:ekart/c_dashboard/screens/a_personal_details/_personal_details_screen.dart';
 import 'package:ekart/utils/app_constant.dart';
 import 'package:ekart/widgets/custom_listtile.dart';
 import 'package:flutter/material.dart';

@@ -10,4 +10,5 @@ mixin AppConstant {
   static const Color gradientEnd = Color(0xFF587be8);
   static const Color transparent = Colors.transparent;
   static const Color red = Colors.red;
+  static const Color green = Colors.green;
 }

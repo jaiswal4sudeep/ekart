@@ -24,7 +24,7 @@ class AppTheme {
     ),
     brightness: Brightness.light,
     scaffoldBackgroundColor: AppConstant.backgroundColor,
-    unselectedWidgetColor: AppConstant.titlecolor,
+    unselectedWidgetColor: AppConstant.subtitlecolor,
     cardColor: AppConstant.secondaryColor,
     textTheme: TextTheme(
       displayLarge: GoogleFonts.montserrat(

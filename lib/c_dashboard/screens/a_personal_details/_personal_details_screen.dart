@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:ekart/c_dashboard/screens/a_personal_details/a_new_address_screen.dart';
 import 'package:ekart/utils/app_constant.dart';
 import 'package:ekart/widgets/back_screen_button.dart';
 import 'package:ekart/widgets/custom_button.dart';
@@ -224,7 +225,7 @@ class _PaymentDetailsScreenState extends State<PaymentDetailsScreen> {
                               height: 30.sp,
                               decoration: const BoxDecoration(
                                 shape: BoxShape.circle,
-                                color: AppConstant.secondaryColor,
+                                color: AppConstant.backgroundColor,
                                 boxShadow: [
                                   BoxShadow(
                                     color: Colors.grey,
@@ -276,7 +277,7 @@ class _PaymentDetailsScreenState extends State<PaymentDetailsScreen> {
                                   'assets/icons/verify.png',
                                 ),
                                 size: 20.sp,
-                                color: AppConstant.subtitlecolor,
+                                color: AppConstant.green,
                               ),
                             )
                           : TextButton(
@@ -353,7 +354,7 @@ class _PaymentDetailsScreenState extends State<PaymentDetailsScreen> {
                                     'assets/icons/verify.png',
                                   ),
                                   size: 20.sp,
-                                  color: AppConstant.subtitlecolor,
+                                  color: AppConstant.green,
                                 ),
                               )
                             : TextButton(
@@ -413,19 +414,53 @@ class _PaymentDetailsScreenState extends State<PaymentDetailsScreen> {
                         },
                       ),
                     ),
-                    CustomTextFormField(
-                      controller: userAddress,
-                      labelText: 'Address',
-                      textInputType: TextInputType.streetAddress,
-                      validator: (value) {
-                        if (value == null || value.trim().isEmpty) {
-                          return 'Please enter your address';
-                        }
-                        if (value.trim().length < 4) {
-                          return 'Address must be at least 4 characters';
-                        }
-                        return null;
-                      },
+                    Text(
+                      'Address',
+                      style: Theme.of(context).textTheme.subtitle1!.copyWith(
+                            fontWeight: FontWeight.bold,
+                          ),
+                    ),
+                    SizedBox(
+                      height: 5.h,
+                    ),
+                    SizedBox(
+                      width: 1.sw,
+                      height: 38.h,
+                      child: Material(
+                        borderRadius: BorderRadius.circular(8),
+                        clipBehavior: Clip.hardEdge,
+                        color: AppConstant.backgroundColor,
+                        child: InkWell(
+                          onTap: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) => const NewAddressScreen(),
+                              ),
+                            );
+                          },
+                          child: Ink(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(8),
+                              border: Border.all(
+                                color:
+                                    AppConstant.subtitlecolor.withOpacity(0.4),
+                              ),
+                            ),
+                            child: Align(
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                '  + Add a new address',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .subtitle1!
+                                    .copyWith(
+                                      fontSize: 13.sp,
+                                    ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
                     ),
                   ],
                 ),
