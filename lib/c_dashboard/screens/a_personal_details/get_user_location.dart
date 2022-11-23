@@ -2,43 +2,36 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 
-Future<List<double>> getCurrentLongLat() async {
+Future<Position?> getCurrentLongLat() async {
   LocationPermission permission;
   permission = await Geolocator.checkPermission();
-  double latitude = 0;
-  double longitude = 0;
   if (permission == LocationPermission.denied) {
     permission = await Geolocator.requestPermission();
-    if (permission == LocationPermission.denied) {
-      Fluttertoast.showToast(msg: 'Permission Denied');
-    } else {
-      var position = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high,
-      );
-      latitude = position.latitude;
-      longitude = position.longitude;
-      return [latitude, longitude];
+    if (permission == LocationPermission.deniedForever ||
+        permission == LocationPermission.denied) {
+      Future.delayed(Duration.zero, () {
+        Fluttertoast.showToast(
+          msg: 'Loction access permission denied',
+        );
+      });
+      return Future.value(null);
     }
-    return [latitude, longitude];
   } else {
-    var position = await Geolocator.getCurrentPosition(
-      desiredAccuracy: LocationAccuracy.high,
-    );
-    latitude = position.latitude;
-    longitude = position.longitude;
-    return [latitude, longitude];
+    Future.delayed(Duration.zero, () {
+      Fluttertoast.showToast(
+        msg:
+            'An error occured, Please make sure the Location service is turned on',
+      );
+    });
+    return Future.value(null);
   }
+  return Geolocator.getCurrentPosition();
 }
 
-Future<List<String>> getCurrentAddress(
+Future<Placemark> getCurrentAddress(
   double lat,
   double long,
 ) async {
   List<Placemark> newPlace = await placemarkFromCoordinates(lat, long);
-  Placemark placeMark = newPlace[0];
-  String addressCon = '${placeMark.street!}, ${placeMark.subLocality!}';
-  String cityCon = placeMark.locality!;
-  String stateCon = placeMark.administrativeArea!;
-  String pinCodeCon = placeMark.postalCode!;
-  return [addressCon, cityCon, stateCon, pinCodeCon];
+  return newPlace[0];
 }

@@ -8,6 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:geolocator/geolocator.dart';
 
 class NewAddressScreen extends HookWidget {
   const NewAddressScreen({super.key});
@@ -174,15 +176,22 @@ class NewAddressScreen extends HookWidget {
                           ),
                           onTap: () async {
                             isGettigAddress.value = true;
-
-                            List<double> cord = await getCurrentLongLat();
-                            List<String> address =
-                                await getCurrentAddress(cord[0], cord[1]);
-                            addressCon.text = address[0];
-                            cityCon.text = address[1];
-                            stateCon.text = address[2];
-                            pinCodeCon.text = address[3];
-
+                            Position? cord = await getCurrentLongLat();
+                            if (cord != null) {
+                              List<Placemark> currentAddress =
+                                  await placemarkFromCoordinates(
+                                cord.latitude,
+                                cord.longitude,
+                              );
+                              if (currentAddress.isNotEmpty) {
+                                addressCon.text =
+                                    '${currentAddress[0].street!}, ${currentAddress[0].subLocality!}';
+                                cityCon.text = currentAddress[0].locality!;
+                                stateCon.text =
+                                    currentAddress[0].administrativeArea!;
+                                pinCodeCon.text = currentAddress[0].postalCode!;
+                              }
+                            }
                             isGettigAddress.value = false;
                           },
                           title: 'Use my current location',
