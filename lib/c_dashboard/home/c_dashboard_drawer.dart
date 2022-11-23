@@ -67,14 +67,8 @@ class DashboardDrawer extends StatelessWidget {
                   Navigator.of(context).pop();
                   Navigator.of(context).push(
                     MaterialPageRoute(
-                      builder: (context) => PaymentDetailsScreen(
+                      builder: (context) => PersonalDetailsScreen(
                         email: email,
-                        userNameS: userData['displayName'],
-                        userPhoneNoS: userData['phoneNo'],
-                        userAddressS: userData['address'],
-                        userPhotoS: userData['photoURL'],
-                        userIsEmailVerifiedS: userData['isEmailVerified'],
-                        userIsPhoneVerifiedS: userData['isPhoneNoVerified'],
                       ),
                     ),
                   );

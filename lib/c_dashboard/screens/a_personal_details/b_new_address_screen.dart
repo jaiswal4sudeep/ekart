@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ekart/c_dashboard/screens/a_personal_details/get_user_location.dart';
 import 'package:ekart/utils/app_constant.dart';
 import 'package:ekart/widgets/back_screen_button.dart';
@@ -8,22 +9,30 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 
 class NewAddressScreen extends HookWidget {
-  const NewAddressScreen({super.key});
+  const NewAddressScreen({
+    super.key,
+    required this.email,
+  });
+
+  final String email;
 
   @override
   Widget build(BuildContext context) {
+    final fireRef = FirebaseFirestore.instance;
     final newAddressKey = GlobalKey<FormState>();
+    final countryCon = useTextEditingController();
     final pinCodeCon = useTextEditingController();
     final stateCon = useTextEditingController();
     final cityCon = useTextEditingController();
     final addressCon = useTextEditingController();
     final isHome = useState<bool>(true);
     final isGettigAddress = useState<bool>(false);
-
+    final isLoading = useState<bool>(false);
     return Scaffold(
       appBar: AppBar(
         title: const Text('Add New Address'),
@@ -120,6 +129,21 @@ class NewAddressScreen extends HookWidget {
                         ),
                       ],
                     ),
+                    CustomTextFormField(
+                      controller: countryCon,
+                      labelText: 'Country',
+                      textInputType: TextInputType.streetAddress,
+                      textInputAction: TextInputAction.done,
+                      validator: (value) {
+                        if (value == null || value.trim().isEmpty) {
+                          return 'Please enter your country';
+                        }
+                        if (value.trim().length < 3) {
+                          return 'Country must be at least 3 characters';
+                        }
+                        return null;
+                      },
+                    ),
                     Text(
                       'Address Type',
                       style: Theme.of(context).textTheme.subtitle1!.copyWith(
@@ -184,13 +208,20 @@ class NewAddressScreen extends HookWidget {
                                 cord.longitude,
                               );
                               if (currentAddress.isNotEmpty) {
-                                addressCon.text =
-                                    '${currentAddress[0].street!}, ${currentAddress[0].subLocality!}';
+                                addressCon.text = currentAddress[0]
+                                        .subLocality!
+                                        .isNotEmpty
+                                    ? '${currentAddress[0].street!}, ${currentAddress[0].subLocality!}'
+                                    : currentAddress[0].street!;
                                 cityCon.text = currentAddress[0].locality!;
                                 stateCon.text =
                                     currentAddress[0].administrativeArea!;
                                 pinCodeCon.text = currentAddress[0].postalCode!;
+                                countryCon.text = currentAddress[0].country!;
                               }
+                            } else {
+                              Fluttertoast.showToast(
+                                  msg: 'An error occured, Please try again.');
                             }
                             isGettigAddress.value = false;
                           },
@@ -205,9 +236,26 @@ class NewAddressScreen extends HookWidget {
             SizedBox(
               width: 0.9.sw,
               height: 40.h,
-              child: CustomOutlinedButton(
-                onPressed: () {
-                  if (newAddressKey.currentState!.validate()) {}
+              child: GradientButton(
+                isLaoding: isLoading.value,
+                onTap: () {
+                  if (newAddressKey.currentState!.validate()) {
+                    isLoading.value = true;
+                    fireRef.collection('user').doc(email).update({
+                      isHome.value ? 'homeAddress' : 'workAddress': {
+                        'address': addressCon.text.trim(),
+                        'city': cityCon.text.trim(),
+                        'state': stateCon.text.trim(),
+                        'pincode': pinCodeCon.text.trim(),
+                        'country': countryCon.text.trim(),
+                      }
+                    }).then((value) {
+                      return Fluttertoast.showToast(msg: 'Saved');
+                    }, onError: (error) {
+                      Fluttertoast.showToast(msg: 'An error occured');
+                    });
+                    isLoading.value = false;
+                  }
                 },
                 title: 'Save',
               ),
