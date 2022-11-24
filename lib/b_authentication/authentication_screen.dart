@@ -1,4 +1,3 @@
-import 'package:ekart/c_dashboard/a_home/_dashboard_screen.dart';
 import 'package:ekart/c_dashboard/dashboard_root.dart';
 import 'package:ekart/widgets/custom_divider.dart';
 import 'package:ekart/widgets/custom_text_form_field.dart';
@@ -282,7 +281,7 @@ class AuthenticationScreen extends HookWidget {
                           if (user != null) {
                             navigator.pushReplacement(
                               MaterialPageRoute(
-                                builder: (context) => HomeScreen(
+                                builder: (context) => DashboardRoot(
                                   email: user.email!,
                                 ),
                               ),

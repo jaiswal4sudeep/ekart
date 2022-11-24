@@ -1,9 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ekart/c_dashboard/e_profile/a_profile_data.dart';
-import 'package:ekart/widgets/error_screen.dart';
-import 'package:ekart/widgets/loading_screen.dart';
+import 'package:ekart/utils/app_constant.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class ProfileBody extends StatelessWidget {
   const ProfileBody({
@@ -21,7 +22,10 @@ class ProfileBody extends StatelessWidget {
       stream: fireRef.collection('user').doc(email).snapshots(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return const LoadingScreen();
+          return LoadingAnimationWidget.dotsTriangle(
+            color: AppConstant.titlecolor,
+            size: 40.sp,
+          );
         } else if (snapshot.hasData) {
           return ProfileData(
             personalData: snapshot.data,
@@ -29,7 +33,7 @@ class ProfileBody extends StatelessWidget {
             fireAuth: fireAuth,
           );
         } else {
-          return const ErrorScreen();
+          return const Text('An error occured');
         }
       },
     );

@@ -30,7 +30,7 @@ class DashboardBottomNavbar extends HookWidget {
               backgroundColor: AppConstant.primaryColor,
               elevation: 0.1,
               onPressed: () {
-                selIndex.value = 3;
+                selIndex.value = 2;
               },
               child: const ImageIcon(
                 AssetImage('assets/icons/cart.png'),
@@ -45,34 +45,34 @@ class DashboardBottomNavbar extends HookWidget {
                 NavBarIcon(
                   image: 'assets/icons/home.png',
                   index: selIndex.value,
-                  id: 1,
+                  id: 0,
                   onPressed: () {
-                    selIndex.value = 1;
+                    selIndex.value = 0;
                   },
                 ),
                 NavBarIcon(
                   image: 'assets/icons/wishlist.png',
                   index: selIndex.value,
-                  id: 2,
+                  id: 1,
                   onPressed: () {
-                    selIndex.value = 2;
+                    selIndex.value = 1;
                   },
                 ),
                 const SizedBox(width: 56),
                 NavBarIcon(
                   image: 'assets/icons/order-history.png',
                   index: selIndex.value,
-                  id: 4,
+                  id: 3,
                   onPressed: () {
-                    selIndex.value = 4;
+                    selIndex.value = 3;
                   },
                 ),
                 NavBarIcon(
                   image: 'assets/icons/profile.png',
                   index: selIndex.value,
-                  id: 5,
+                  id: 4,
                   onPressed: () {
-                    selIndex.value = 5;
+                    selIndex.value = 4;
                   },
                 )
               ],

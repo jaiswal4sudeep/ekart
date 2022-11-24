@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:ekart/c_dashboard/e_profile/get_user_location.dart';
+import 'package:ekart/services/get_user_location.dart';
 import 'package:ekart/utils/app_constant.dart';
 import 'package:ekart/widgets/back_screen_button.dart';
 import 'package:ekart/widgets/custom_button.dart';

@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:ekart/c_dashboard/a_home/_dashboard_screen.dart';
-import 'package:ekart/c_dashboard/a_home/home_search_screen.dart';
+import 'package:ekart/c_dashboard/a_home/home_body.dart';
+import 'package:ekart/c_dashboard/screens/search_screen.dart';
+import 'package:ekart/c_dashboard/b_wishlist/wishlist_body.dart';
 import 'package:ekart/c_dashboard/c_cart/cart_body.dart';
 import 'package:ekart/c_dashboard/d_order_history/order_history_body.dart';
 import 'package:ekart/c_dashboard/e_profile/_profile_body.dart';
@@ -32,6 +33,7 @@ class _DashboardRootState extends ConsumerState<DashboardRoot> {
   @override
   Widget build(BuildContext context) {
     final dailyOff = useState<int>(0);
+    final selIndex = useState<int>(0);
 
     getOffers() async {
       var document = fireRef.collection('offer').doc('daily_off');
@@ -47,10 +49,14 @@ class _DashboardRootState extends ConsumerState<DashboardRoot> {
       return null;
     });
 
-    final selIndex = useState<int>(1);
     List<Widget> dashboardBodyItems = [
-      HomeScreen(
+      HomeBody(
         email: widget.email,
+        dailyOffValue: dailyOff.value,
+      ),
+      WishlistBody(
+        email: widget.email,
+        dailyOffValue: dailyOff.value,
       ),
       CartBody(
         email: widget.email,
@@ -60,11 +66,18 @@ class _DashboardRootState extends ConsumerState<DashboardRoot> {
         email: widget.email,
       ),
     ];
+    List<String> appBarTitle = [
+      'EKart',
+      'Wishlist',
+      'Cart',
+      'Order History',
+      'Profile',
+    ];
 
     return WillPopScope(
       onWillPop: () async {
         if (DateTime.now().difference(datetime) >= const Duration(seconds: 2)) {
-          Fluttertoast.showToast(msg: 'Tap again to exit!');
+          Fluttertoast.showToast(msg: 'Tap again to exit');
           datetime = DateTime.now();
           return false;
         } else {
@@ -73,8 +86,8 @@ class _DashboardRootState extends ConsumerState<DashboardRoot> {
       },
       child: Scaffold(
         appBar: AppBar(
-          title: const Text(
-            'EKart',
+          title: Text(
+            appBarTitle[selIndex.value],
           ),
           actions: [
             IconButton(
@@ -95,8 +108,7 @@ class _DashboardRootState extends ConsumerState<DashboardRoot> {
             ),
           ],
         ),
-        extendBody: true,
-        body: dashboardBodyItems[0],
+        body: dashboardBodyItems[selIndex.value],
         bottomNavigationBar: DashboardBottomNavbar(
           selIndex: selIndex,
         ),

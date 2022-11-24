@@ -1,12 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:ekart/c_dashboard/widgets/custom_loading_screen.dart';
-import 'package:ekart/c_dashboard/b_wishlist/wishlist_scaffold.dart';
-import 'package:ekart/widgets/error_screen.dart';
+import 'package:ekart/c_dashboard/b_wishlist/wishlist_data.dart';
+import 'package:ekart/utils/app_constant.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 
-class WishlistScreen extends HookWidget {
-  const WishlistScreen({
+class WishlistBody extends HookWidget {
+  const WishlistBody({
     super.key,
     required this.email,
     required this.dailyOffValue,
@@ -36,17 +37,18 @@ class WishlistScreen extends HookWidget {
           }
         });
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return const CustomLoadingScreen(
-            title: 'Wishlist',
+          return LoadingAnimationWidget.dotsTriangle(
+            color: AppConstant.titlecolor,
+            size: 40.sp,
           );
         } else if (snapshot.hasData) {
-          return WishlistBody(
+          return WishlistData(
             productIdList: productId.value,
             email: email,
             dailyOffValue: dailyOffValue,
           );
         } else {
-          return const ErrorScreen();
+          return const Text('An error occured');
         }
       },
     );
