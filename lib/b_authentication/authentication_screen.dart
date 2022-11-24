@@ -1,4 +1,5 @@
-import 'package:ekart/c_dashboard/home/_dashboard_screen.dart';
+import 'package:ekart/c_dashboard/a_home/_dashboard_screen.dart';
+import 'package:ekart/c_dashboard/dashboard_root.dart';
 import 'package:ekart/widgets/custom_divider.dart';
 import 'package:ekart/widgets/custom_text_form_field.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -241,7 +242,7 @@ class AuthenticationScreen extends HookWidget {
                             if (user != null) {
                               navigator.pushReplacement(
                                 MaterialPageRoute(
-                                  builder: (context) => DashboardScreen(
+                                  builder: (context) => DashboardRoot(
                                     email: userEmail.text,
                                   ),
                                 ),
@@ -281,7 +282,7 @@ class AuthenticationScreen extends HookWidget {
                           if (user != null) {
                             navigator.pushReplacement(
                               MaterialPageRoute(
-                                builder: (context) => DashboardScreen(
+                                builder: (context) => HomeScreen(
                                   email: user.email!,
                                 ),
                               ),

@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:ekart/c_dashboard/screens/b_wishlist/wishlist_loading_screen.dart';
+import 'package:ekart/c_dashboard/widgets/custom_loading_screen.dart';
 import 'package:ekart/c_dashboard/screens/product_details_screen.dart';
-import 'package:ekart/widgets/back_screen_button.dart';
 import 'package:ekart/widgets/error_screen.dart';
 import 'package:ekart/widgets/no_data.dart';
 import 'package:ekart/widgets/shimmer_widgets.dart';
@@ -9,8 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class WishlistScaffold extends HookWidget {
-  const WishlistScaffold({
+class WishlistBody extends HookWidget {
+  const WishlistBody({
     Key? key,
     required this.productIdList,
     required this.email,
@@ -25,12 +24,6 @@ class WishlistScaffold extends HookWidget {
   Widget build(BuildContext context) {
     final fireRef = FirebaseFirestore.instance;
     return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-          'Wishlist',
-        ),
-        leading: const BackScreenButton(),
-      ),
       body: productIdList.isEmpty
           ? const NoData()
           : FutureBuilder(

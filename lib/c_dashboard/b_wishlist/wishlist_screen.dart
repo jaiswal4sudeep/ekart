@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:ekart/c_dashboard/screens/b_wishlist/wishlist_loading_screen.dart';
-import 'package:ekart/c_dashboard/screens/b_wishlist/wishlist_scaffold.dart';
+import 'package:ekart/c_dashboard/widgets/custom_loading_screen.dart';
+import 'package:ekart/c_dashboard/b_wishlist/wishlist_scaffold.dart';
 import 'package:ekart/widgets/error_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -40,7 +40,7 @@ class WishlistScreen extends HookWidget {
             title: 'Wishlist',
           );
         } else if (snapshot.hasData) {
-          return WishlistScaffold(
+          return WishlistBody(
             productIdList: productId.value,
             email: email,
             dailyOffValue: dailyOffValue,

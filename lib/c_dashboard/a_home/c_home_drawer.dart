@@ -1,16 +1,16 @@
 import 'package:ekart/b_authentication/authentication_controller.dart';
 import 'package:ekart/b_authentication/authentication_screen.dart';
-import 'package:ekart/c_dashboard/screens/b_wishlist/wishlist_screen.dart';
-import 'package:ekart/c_dashboard/screens/cart/cart_screen.dart';
-import 'package:ekart/c_dashboard/screens/order_history_screen.dart';
-import 'package:ekart/c_dashboard/screens/a_personal_details/_personal_details_screen.dart';
+import 'package:ekart/c_dashboard/b_wishlist/wishlist_screen.dart';
+import 'package:ekart/c_dashboard/e_profile/_profile_body.dart';
+import 'package:ekart/c_dashboard/c_cart/cart_body.dart';
+import 'package:ekart/c_dashboard/d_order_history/order_history_body.dart';
 import 'package:ekart/utils/app_constant.dart';
 import 'package:ekart/widgets/custom_listtile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class DashboardDrawer extends StatelessWidget {
-  const DashboardDrawer({
+class HomeDrawer extends StatelessWidget {
+  const HomeDrawer({
     Key? key,
     required this.appName,
     required this.appVersion,
@@ -67,13 +67,13 @@ class DashboardDrawer extends StatelessWidget {
                   Navigator.of(context).pop();
                   Navigator.of(context).push(
                     MaterialPageRoute(
-                      builder: (context) => PersonalDetailsScreen(
+                      builder: (context) => ProfileBody(
                         email: email,
                       ),
                     ),
                   );
                 },
-                imagePath: 'assets/icons/user-avatar.png',
+                imagePath: 'assets/icons/profile.png',
                 title: 'Personal details',
               ),
               CustomListTile(
@@ -88,7 +88,7 @@ class DashboardDrawer extends StatelessWidget {
                     ),
                   );
                 },
-                imagePath: 'assets/icons/heart.png',
+                imagePath: 'assets/icons/wishlist.png',
                 title: 'Wishlist',
               ),
               CustomListTile(
@@ -96,13 +96,13 @@ class DashboardDrawer extends StatelessWidget {
                   Navigator.of(context).pop();
                   Navigator.of(context).push(
                     MaterialPageRoute(
-                      builder: (context) => CartScreen(
+                      builder: (context) => CartBody(
                         email: email,
                       ),
                     ),
                   );
                 },
-                imagePath: 'assets/icons/shopping-cart.png',
+                imagePath: 'assets/icons/cart.png',
                 title: 'Cart',
               ),
               CustomListTile(
@@ -110,11 +110,11 @@ class DashboardDrawer extends StatelessWidget {
                   Navigator.of(context).pop();
                   Navigator.of(context).push(
                     MaterialPageRoute(
-                      builder: (context) => const OrderHistoryScreen(),
+                      builder: (context) => const OrderHistoryBody(),
                     ),
                   );
                 },
-                imagePath: 'assets/icons/tracking.png',
+                imagePath: 'assets/icons/order-history.png',
                 title: 'Order history',
               ),
               const Spacer(),

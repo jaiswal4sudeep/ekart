@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:ekart/c_dashboard/screens/cart/cart_screen.dart';
+import 'package:ekart/c_dashboard/c_cart/cart_body.dart';
 import 'package:ekart/services/zoom_image.dart';
 import 'package:ekart/utils/app_constant.dart';
 import 'package:ekart/widgets/back_screen_button.dart';
@@ -108,7 +108,7 @@ class ProductDetailsScreen extends HookWidget {
             onPressed: () {
               Navigator.of(context).push(
                 MaterialPageRoute(
-                  builder: (context) => CartScreen(
+                  builder: (context) => CartBody(
                     email: email,
                   ),
                 ),
