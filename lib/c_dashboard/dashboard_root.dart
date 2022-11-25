@@ -51,7 +51,7 @@ class _DashboardRootState extends ConsumerState<DashboardRoot> {
       return null;
     });
 
-    List<Widget> dashboardBodyItems = [
+    final List<Widget> dashboardBodyItems = [
       HomeBody(
         email: widget.email,
         dailyOffValue: dailyOff.value,
@@ -68,13 +68,14 @@ class _DashboardRootState extends ConsumerState<DashboardRoot> {
         email: widget.email,
       ),
     ];
-    List<String> appBarTitle = [
+    final List<String> appBarTitle = [
       'EKart',
       'Wishlist',
       'Cart',
       'Order History',
       'Profile',
     ];
+    final List<Icon> actionIcons = [];
 
     return WillPopScope(
       onWillPop: () async {
