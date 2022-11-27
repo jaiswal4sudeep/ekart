@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:ekart/c_dashboard/e_profile/a_profile_data.dart';
+import 'package:ekart/c_dashboard/screens/more/_profile/a_profile_data.dart';
 import 'package:ekart/utils/app_constant.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';

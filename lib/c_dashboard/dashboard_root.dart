@@ -1,11 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:ekart/c_dashboard/a_home/home_body.dart';
+import 'package:ekart/c_dashboard/screens/more/_more_screen.dart';
 import 'package:ekart/c_dashboard/screens/search_screen.dart';
 import 'package:ekart/c_dashboard/b_wishlist/wishlist_body.dart';
 import 'package:ekart/c_dashboard/c_cart/cart_body.dart';
-import 'package:ekart/c_dashboard/d_order_history/order_history_body.dart';
-import 'package:ekart/c_dashboard/e_profile/_profile_body.dart';
 import 'package:ekart/c_dashboard/widgets/bottom_navbar.dart';
 import 'package:ekart/utils/app_constant.dart';
 import 'package:flutter/material.dart';
@@ -63,19 +62,12 @@ class _DashboardRootState extends ConsumerState<DashboardRoot> {
       CartBody(
         email: widget.email,
       ),
-      const OrderHistoryBody(),
-      ProfileBody(
-        email: widget.email,
-      ),
     ];
     final List<String> appBarTitle = [
       'EKart',
       'Wishlist',
       'Cart',
-      'Order History',
-      'Profile',
     ];
-    final List<Icon> actionIcons = [];
 
     return WillPopScope(
       onWillPop: () async {
@@ -103,6 +95,20 @@ class _DashboardRootState extends ConsumerState<DashboardRoot> {
               icon: Image.asset(
                 'assets/icons/search.png',
                 height: 18.sp,
+                color: AppConstant.subtitlecolor,
+              ),
+            ),
+            IconButton(
+              onPressed: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => const MoreScreen(),
+                  ),
+                );
+              },
+              icon: Image.asset(
+                'assets/icons/user.png',
+                height: 22.5.sp,
                 color: AppConstant.subtitlecolor,
               ),
             ),

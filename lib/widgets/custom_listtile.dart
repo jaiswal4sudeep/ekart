@@ -22,12 +22,12 @@ class CustomListTile extends StatelessWidget {
         height: 20.sp,
         color: AppConstant.subtitlecolor,
       ),
+      trailing: const Icon(
+        Icons.keyboard_arrow_right_rounded,
+      ),
       title: Text(
         title,
-        style: Theme.of(context).textTheme.headline5!.copyWith(
-              fontWeight: FontWeight.bold,
-              color: AppConstant.titlecolor,
-            ),
+        style: Theme.of(context).textTheme.headline5,
       ),
     );
   }

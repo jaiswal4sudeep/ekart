@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:ekart/c_dashboard/e_profile/b_new_address_screen.dart';
+import 'package:ekart/c_dashboard/screens/more/_profile/b_new_address_screen.dart';
 import 'package:ekart/utils/app_constant.dart';
 import 'package:ekart/widgets/custom_text_form_field.dart';
 import 'package:firebase_auth/firebase_auth.dart';

@@ -38,7 +38,6 @@ class AuthenticationController {
             {
               'displayName': user.displayName.toString(),
               'email': user.email.toString(),
-              'photoURL': user.photoURL.toString(),
               'phoneNo': '',
               'homeAddress': [],
               'workAddress': [],
@@ -92,7 +91,6 @@ class AuthenticationController {
           {
             'displayName': userName,
             'email': email,
-            'photoURL': '',
             'phoneNo': '',
             'homeAddress': [],
             'workAddress': [],

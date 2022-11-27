@@ -1,4 +1,3 @@
-
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:ekart/c_dashboard/widgets/nav_item.dart';
 import 'package:ekart/utils/app_constant.dart';
@@ -35,16 +34,6 @@ class BottomNavBar extends StatelessWidget {
           selIndex: selIndex,
           imageName: 'cart',
           id: 2,
-        ),
-        NavItem(
-          selIndex: selIndex,
-          imageName: 'delivery',
-          id: 3,
-        ),
-        NavItem(
-          selIndex: selIndex,
-          imageName: 'profile',
-          id: 4,
         ),
       ],
       buttonBackgroundColor: AppConstant.primaryColor,
