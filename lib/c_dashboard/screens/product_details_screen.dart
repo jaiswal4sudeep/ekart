@@ -2,10 +2,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ekart/c_dashboard/c_cart/cart_body.dart';
 import 'package:ekart/services/zoom_image.dart';
 import 'package:ekart/utils/app_constant.dart';
-import 'package:ekart/widgets/back_screen_button.dart';
 import 'package:ekart/widgets/custom_button.dart';
+import 'package:ekart/widgets/custom_widgets.dart';
 import 'package:ekart/widgets/no_data.dart';
 import 'package:ekart/widgets/shimmer_widgets.dart';
+import 'package:ekart/widgets/text_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -226,11 +227,8 @@ class ProductDetailsScreen extends HookWidget {
                         size: 25.sp,
                         color: AppConstant.subtitlecolor,
                       ),
-                      Text(
-                        rating,
-                        style: Theme.of(context).textTheme.headline3!.copyWith(
-                              fontWeight: FontWeight.bold,
-                            ),
+                      TextStyle3(
+                        content: rating,
                       ),
                       const Spacer(),
                       Text(
@@ -314,11 +312,8 @@ class ProductDetailsScreen extends HookWidget {
                       : AppConstant.subtitlecolor.withOpacity(0.5),
                 ),
               ),
-              Text(
-                noOfItems.value.toString(),
-                style: Theme.of(context).textTheme.headline3!.copyWith(
-                      fontWeight: FontWeight.bold,
-                    ),
+              TextStyle3(
+                content: noOfItems.value.toString(),
               ),
               IconButton(
                 onPressed: noOfItems.value < availableStock

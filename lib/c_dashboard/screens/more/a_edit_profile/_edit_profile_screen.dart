@@ -1,13 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:ekart/c_dashboard/screens/more/_profile/a_profile_data.dart';
+import 'package:ekart/c_dashboard/screens/more/a_edit_profile/a_edit_profile_data.dart';
 import 'package:ekart/utils/app_constant.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
-class ProfileBody extends StatelessWidget {
-  const ProfileBody({
+class EditProfileScreen extends StatelessWidget {
+  const EditProfileScreen({
     super.key,
     required this.email,
   });
@@ -27,7 +27,7 @@ class ProfileBody extends StatelessWidget {
             size: 40.sp,
           );
         } else if (snapshot.hasData) {
-          return ProfileData(
+          return EditProfileData(
             personalData: snapshot.data,
             fireRef: fireRef,
             fireAuth: fireAuth,

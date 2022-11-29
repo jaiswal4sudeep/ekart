@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:ekart/c_dashboard/a_home/home_body.dart';
 import 'package:ekart/c_dashboard/screens/more/_more_screen.dart';
 import 'package:ekart/c_dashboard/screens/search_screen.dart';
@@ -29,7 +28,6 @@ class _DashboardRootState extends ConsumerState<DashboardRoot> {
   DateTime datetime = DateTime.now();
   final fireRef = FirebaseFirestore.instance;
   int todayDate = 0;
-  GlobalKey bottomNavigationKey = GlobalKey<CurvedNavigationBarState>();
 
   @override
   Widget build(BuildContext context) {
@@ -81,6 +79,7 @@ class _DashboardRootState extends ConsumerState<DashboardRoot> {
       },
       child: Scaffold(
         appBar: AppBar(
+          automaticallyImplyLeading: false,
           title: Text(
             appBarTitle[selIndex.value],
           ),
@@ -102,7 +101,9 @@ class _DashboardRootState extends ConsumerState<DashboardRoot> {
               onPressed: () {
                 Navigator.of(context).push(
                   MaterialPageRoute(
-                    builder: (context) => const MoreScreen(),
+                    builder: (context) => MoreScreen(
+                      email: widget.email,
+                    ),
                   ),
                 );
               },
@@ -119,7 +120,6 @@ class _DashboardRootState extends ConsumerState<DashboardRoot> {
         ),
         body: dashboardBodyItems[selIndex.value],
         bottomNavigationBar: BottomNavBar(
-          bottomNavigationKey: bottomNavigationKey,
           selIndex: selIndex,
         ),
       ),

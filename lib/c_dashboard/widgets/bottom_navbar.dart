@@ -1,50 +1,62 @@
-import 'package:curved_navigation_bar/curved_navigation_bar.dart';
-import 'package:ekart/c_dashboard/widgets/nav_item.dart';
 import 'package:ekart/utils/app_constant.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class BottomNavBar extends StatelessWidget {
   const BottomNavBar({
     Key? key,
-    required this.bottomNavigationKey,
     required this.selIndex,
   }) : super(key: key);
 
-  final GlobalKey<State<StatefulWidget>> bottomNavigationKey;
   final ValueNotifier<int> selIndex;
 
   @override
   Widget build(BuildContext context) {
-    return CurvedNavigationBar(
-      key: bottomNavigationKey,
-      index: selIndex.value,
-      height: 60.0,
-      items: <Widget>[
-        NavItem(
-          selIndex: selIndex,
-          imageName: 'home',
-          id: 0,
+    return BottomNavigationBar(
+      showSelectedLabels: false,
+      showUnselectedLabels: false,
+      backgroundColor: AppConstant.secondaryColor,
+      currentIndex: selIndex.value,
+      elevation: 20,
+      type: BottomNavigationBarType.fixed,
+      items: [
+        BottomNavigationBarItem(
+          icon: Image.asset(
+            selIndex.value == 0
+                ? 'assets/icons/home_active.png'
+                : 'assets/icons/home_inactive.png',
+            width: 25.sp,
+            height: 25.sp,
+            color: AppConstant.subtitlecolor,
+          ),
+          label: '',
         ),
-        NavItem(
-          selIndex: selIndex,
-          imageName: 'wishlist',
-          id: 1,
+        BottomNavigationBarItem(
+          icon: Image.asset(
+            selIndex.value == 1
+                ? 'assets/icons/wishlist_active.png'
+                : 'assets/icons/wishlist_inactive.png',
+            width: 20.sp,
+            height: 20.sp,
+            color: AppConstant.subtitlecolor,
+          ),
+          label: '',
         ),
-        NavItem(
-          selIndex: selIndex,
-          imageName: 'cart',
-          id: 2,
+        BottomNavigationBarItem(
+          icon: Image.asset(
+            selIndex.value == 2
+                ? 'assets/icons/cart_active.png'
+                : 'assets/icons/cart_inactive.png',
+            width: 30.sp,
+            height: 30.sp,
+            color: AppConstant.subtitlecolor,
+          ),
+          label: '',
         ),
       ],
-      buttonBackgroundColor: AppConstant.primaryColor,
-      color: AppConstant.secondaryColor,
-      backgroundColor: AppConstant.transparent,
-      animationCurve: Curves.easeInOut,
-      animationDuration: const Duration(milliseconds: 300),
       onTap: (index) {
         selIndex.value = index;
       },
-      letIndexChange: (index) => true,
     );
   }
 }

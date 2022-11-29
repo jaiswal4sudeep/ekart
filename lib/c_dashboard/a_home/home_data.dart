@@ -1,7 +1,7 @@
 import 'package:ekart/c_dashboard/screens/product_details_screen.dart';
 import 'package:ekart/services/zoom_image.dart';
 import 'package:ekart/utils/app_constant.dart';
-import 'package:ekart/widgets/custom_chip.dart';
+import 'package:ekart/widgets/custom_widgets.dart';
 import 'package:ekart/widgets/no_data.dart';
 import 'package:ekart/widgets/shimmer_widgets.dart';
 import 'package:flutter/material.dart';

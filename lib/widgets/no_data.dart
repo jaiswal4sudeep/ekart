@@ -1,4 +1,5 @@
 import 'package:ekart/utils/app_constant.dart';
+import 'package:ekart/widgets/text_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -22,10 +23,7 @@ class NoData extends StatelessWidget {
           SizedBox(
             height: 20.h,
           ),
-          Text(
-            'No items available',
-            style: Theme.of(context).textTheme.headline4,
-          ),
+          const TextStyle5(content: 'No items available')
         ],
       ),
     );
