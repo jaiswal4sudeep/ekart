@@ -3,11 +3,10 @@ import 'package:ekart/c_dashboard/screens/more/a_more_screen_data.dart';
 import 'package:ekart/utils/app_constant.dart';
 import 'package:ekart/widgets/custom_widgets.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
-class MoreScreen extends HookWidget {
+class MoreScreen extends StatelessWidget {
   const MoreScreen({
     super.key,
     required this.email,
@@ -17,7 +16,6 @@ class MoreScreen extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isAuthActive = useState<bool>(false);
     return Scaffold(
       appBar: AppBar(
         title: const Text('More'),
@@ -37,7 +35,6 @@ class MoreScreen extends HookWidget {
             return MoreScreenData(
               userData: snapshot.data,
               email: email,
-              isAuthActive: isAuthActive,
             );
           } else {
             return const Text('An error occured');

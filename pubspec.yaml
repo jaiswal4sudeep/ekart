@@ -34,6 +34,7 @@ dependencies:
   curved_navigation_bar: ^1.0.3
   package_info_plus: ^3.0.2
   firebase_remote_config: ^3.0.6
+  local_auth: ^2.1.2
 
 dev_dependencies:
   flutter_test:

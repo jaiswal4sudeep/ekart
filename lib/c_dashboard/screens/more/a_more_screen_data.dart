@@ -9,23 +9,24 @@ import 'package:ekart/utils/app_constant.dart';
 import 'package:ekart/widgets/custom_widgets.dart';
 import 'package:ekart/widgets/text_styles.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
-class MoreScreenData extends StatelessWidget {
+class MoreScreenData extends HookWidget {
   const MoreScreenData({
     Key? key,
     required this.email,
-    required this.isAuthActive,
     required this.userData,
   }) : super(key: key);
 
   final String email;
-  final ValueNotifier<bool> isAuthActive;
   final dynamic userData;
 
   @override
   Widget build(BuildContext context) {
+    final isAuthActive = useState<bool>(false);
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8),
       child: ListView(
@@ -33,40 +34,90 @@ class MoreScreenData extends StatelessWidget {
         children: [
           Card(
             child: Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.all(16.0),
               child: Column(
                 children: [
-                  Text(
-                    userData['displayName'],
-                    style: Theme.of(context).textTheme.headline4!.copyWith(
-                          fontWeight: FontWeight.bold,
-                        ),
-                  ),
-                  SizedBox(
-                    height: 3.h,
-                  ),
-                  Text(
-                    userData['email'],
-                    style: Theme.of(context).textTheme.headline5,
-                  ),
-                  SizedBox(
-                    height: 5.h,
-                  ),
                   Row(
                     children: [
-                      Image.asset(
-                        'assets/icons/ec.png',
-                        height: 18.sp,
-                        color: AppConstant.subtitlecolor,
+                      CircleAvatar(
+                        radius: 25.r,
                       ),
                       SizedBox(
-                        width: 5.w,
+                        width: 10.w,
                       ),
-                      Text(
-                        userData['ec'].toString(),
-                        style: Theme.of(context).textTheme.headline4!.copyWith(
-                              fontWeight: FontWeight.bold,
-                            ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            children: [
+                              Text(
+                                userData['displayName'],
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .headline4!
+                                    .copyWith(
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                              ),
+                              SizedBox(
+                                width: 5.w,
+                              ),
+                              userData['isEmailVerified'] &&
+                                      userData['isPhoneNoVerified']
+                                  ? Image.asset(
+                                      'assets/icons/verify.png',
+                                      width: 15.sp,
+                                      height: 15.sp,
+                                      color: AppConstant.green,
+                                    )
+                                  : GestureDetector(
+                                      onTap: () {
+                                        Fluttertoast.showToast(
+                                          msg:
+                                              'Your email or phone no. has not been verified yet!',
+                                        );
+                                      },
+                                      child: Image.asset(
+                                        'assets/icons/error.png',
+                                        width: 15.sp,
+                                        height: 15.sp,
+                                        color: AppConstant.red,
+                                      ),
+                                    )
+                            ],
+                          ),
+                          SizedBox(
+                            height: 3.h,
+                          ),
+                          Text(
+                            userData['email'],
+                            style: Theme.of(context).textTheme.headline5,
+                          ),
+                          SizedBox(
+                            height: 5.h,
+                          ),
+                          Row(
+                            children: [
+                              Image.asset(
+                                'assets/icons/ec.png',
+                                height: 15.sp,
+                                color: AppConstant.subtitlecolor,
+                              ),
+                              SizedBox(
+                                width: 5.w,
+                              ),
+                              Text(
+                                userData['ec'].toString(),
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .headline4!
+                                    .copyWith(
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                              ),
+                            ],
+                          ),
+                        ],
                       ),
                     ],
                   ),
@@ -85,7 +136,7 @@ class MoreScreenData extends StatelessWidget {
               );
             },
             title: const TextStyle5(
-              content: 'My Profile',
+              content: 'Edit Profile',
             ),
             leading: const ImgStyle(
               img: 'user-edit',
