@@ -32,7 +32,18 @@ class MoreScreenData extends HookWidget {
       child: ListView(
         physics: const BouncingScrollPhysics(),
         children: [
-          Card(
+          Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(8),
+              gradient: const LinearGradient(
+                colors: [
+                  AppConstant.gradientStart,
+                  AppConstant.gradientEnd,
+                ],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              ),
+            ),
             child: Padding(
               padding: const EdgeInsets.all(16.0),
               child: Column(
@@ -41,6 +52,12 @@ class MoreScreenData extends HookWidget {
                     children: [
                       CircleAvatar(
                         radius: 25.r,
+                        backgroundColor: AppConstant.secondaryColor,
+                        child: Image.asset(
+                          'assets/icons/user_trans.png',
+                          color: AppConstant.subtitlecolor,
+                          height: 25.r,
+                        ),
                       ),
                       SizedBox(
                         width: 10.w,
@@ -57,6 +74,7 @@ class MoreScreenData extends HookWidget {
                                     .headline4!
                                     .copyWith(
                                       fontWeight: FontWeight.bold,
+                                      color: AppConstant.secondaryColor,
                                     ),
                               ),
                               SizedBox(
@@ -91,7 +109,10 @@ class MoreScreenData extends HookWidget {
                           ),
                           Text(
                             userData['email'],
-                            style: Theme.of(context).textTheme.headline5,
+                            style:
+                                Theme.of(context).textTheme.headline5!.copyWith(
+                                      color: AppConstant.secondaryColor,
+                                    ),
                           ),
                           SizedBox(
                             height: 5.h,
@@ -101,7 +122,7 @@ class MoreScreenData extends HookWidget {
                               Image.asset(
                                 'assets/icons/ec.png',
                                 height: 15.sp,
-                                color: AppConstant.subtitlecolor,
+                                color: AppConstant.secondaryColor,
                               ),
                               SizedBox(
                                 width: 5.w,
@@ -113,6 +134,7 @@ class MoreScreenData extends HookWidget {
                                     .headline4!
                                     .copyWith(
                                       fontWeight: FontWeight.bold,
+                                      color: AppConstant.secondaryColor,
                                     ),
                               ),
                             ],
@@ -124,6 +146,9 @@ class MoreScreenData extends HookWidget {
                 ],
               ),
             ),
+          ),
+          SizedBox(
+            height: 5.h,
           ),
           ListTile(
             onTap: () {

@@ -12,3 +12,5 @@ mixin AppConstant {
   static const Color red = Colors.red;
   static const Color green = Colors.green;
 }
+
+String fcmToken = '';

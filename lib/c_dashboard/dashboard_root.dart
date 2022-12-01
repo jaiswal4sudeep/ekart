@@ -42,9 +42,16 @@ class _DashboardRootState extends ConsumerState<DashboardRoot> {
       });
     }
 
+    updateFCMToken() {
+      fireRef.collection('user').doc(widget.email).update({
+        'fcmToken': fcmToken,
+      });
+    }
+
     useEffect(() {
       todayDate = datetime.day;
       getOffers();
+      updateFCMToken();
       return null;
     });
 

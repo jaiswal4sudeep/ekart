@@ -12,7 +12,6 @@ class BottomNavBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const duration = Duration(milliseconds: 350);
     return BottomNavigationBar(
       showSelectedLabels: false,
       showUnselectedLabels: false,
@@ -22,59 +21,26 @@ class BottomNavBar extends StatelessWidget {
       type: BottomNavigationBarType.fixed,
       items: [
         BottomNavigationBarItem(
-          icon: AnimatedSwitcher(
-            duration: duration,
-            transitionBuilder: (child, anim) => ScaleTransition(
-              scale: anim,
-              child: child,
-            ),
-            child: Image.asset(
-              selIndex.value == 0
-                  ? 'assets/icons/home_active.png'
-                  : 'assets/icons/home_inactive.png',
-              key: ValueKey(selIndex.value == 0 ? 'icon1' : 'icon2'),
-              width: 25.sp,
-              height: 25.sp,
-              color: AppConstant.subtitlecolor,
-            ),
+          icon: BottomNavIcon(
+            selIndex: selIndex,
+            icon: 'home',
+            id: 0,
           ),
           label: '',
         ),
         BottomNavigationBarItem(
-          icon: AnimatedSwitcher(
-            duration: duration,
-            transitionBuilder: (child, anim) => ScaleTransition(
-              scale: anim,
-              child: child,
-            ),
-            child: Image.asset(
-              selIndex.value == 1
-                  ? 'assets/icons/wishlist_active.png'
-                  : 'assets/icons/wishlist_inactive.png',
-              key: ValueKey(selIndex.value == 1 ? 'icon1' : 'icon2'),
-              width: 20.sp,
-              height: 20.sp,
-              color: AppConstant.subtitlecolor,
-            ),
+          icon: BottomNavIcon(
+            selIndex: selIndex,
+            icon: 'wishlist',
+            id: 1,
           ),
           label: '',
         ),
         BottomNavigationBarItem(
-          icon: AnimatedSwitcher(
-            duration: duration,
-            transitionBuilder: (child, anim) => ScaleTransition(
-              scale: anim,
-              child: child,
-            ),
-            child: Image.asset(
-              selIndex.value == 2
-                  ? 'assets/icons/cart_active.png'
-                  : 'assets/icons/cart_inactive.png',
-              key: ValueKey(selIndex.value == 2 ? 'icon1' : 'icon2'),
-              width: 30.sp,
-              height: 30.sp,
-              color: AppConstant.subtitlecolor,
-            ),
+          icon: BottomNavIcon(
+            selIndex: selIndex,
+            icon: 'cart',
+            id: 2,
           ),
           label: '',
         ),
@@ -82,6 +48,43 @@ class BottomNavBar extends StatelessWidget {
       onTap: (index) {
         selIndex.value = index;
       },
+    );
+  }
+}
+
+class BottomNavIcon extends StatelessWidget {
+  const BottomNavIcon({
+    Key? key,
+    required this.selIndex,
+    required this.icon,
+    required this.id,
+  }) : super(key: key);
+
+  final ValueNotifier<int> selIndex;
+  final String icon;
+  final int id;
+
+  @override
+  Widget build(BuildContext context) {
+    const duration = Duration(milliseconds: 350);
+    return AnimatedSwitcher(
+      duration: duration,
+      transitionBuilder: (child, anim) => ScaleTransition(
+        scale: anim,
+        child: child,
+      ),
+      child: Image.asset(
+        selIndex.value == id
+            ? 'assets/icons/${icon}_active.png'
+            : 'assets/icons/${icon}_inactive.png',
+        key: ValueKey(selIndex.value == id ? 'icon1' : 'icon2'),
+        height: id == 0
+            ? 25.sp
+            : id == 1
+                ? 20.sp
+                : 30.sp,
+        color: AppConstant.subtitlecolor,
+      ),
     );
   }
 }
