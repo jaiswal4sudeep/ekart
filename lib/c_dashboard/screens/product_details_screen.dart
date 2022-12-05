@@ -361,18 +361,52 @@ class ProductDetailsScreen extends HookWidget {
   }
 }
 
-void addToCart(
+Future<void> addToCart(
   String productId,
   String email,
   int selectedQuantity,
   FirebaseFirestore fireRef,
   ValueNotifier<bool> isLoading,
-) {
+) async {
   isLoading.value = true;
-  fireRef.collection('user').doc(email).collection('cart').doc(productId).set({
-    'productId': productId,
-    'selectedQuantity': selectedQuantity,
-  }).then(
-    (value) => isLoading.value = false,
-  );
+  await checkDoesProductExist(productId, email, fireRef)
+      ? fireRef
+          .collection('user')
+          .doc(email)
+          .collection('cart')
+          .doc(productId)
+          .update({
+          'productId': productId,
+          'selectedQuantity': FieldValue.increment(selectedQuantity),
+        }).then(
+          (value) => isLoading.value = false,
+        )
+      : fireRef
+          .collection('user')
+          .doc(email)
+          .collection('cart')
+          .doc(productId)
+          .set({
+          'productId': productId,
+          'selectedQuantity': selectedQuantity,
+        }).then(
+          (value) => isLoading.value = false,
+        );
+}
+
+Future<bool> checkDoesProductExist(
+  String productId,
+  String email,
+  FirebaseFirestore fireRef,
+) async {
+  bool doesExist = await fireRef
+      .collection('user')
+      .doc(email)
+      .collection('cart')
+      .where('productId', isEqualTo: productId)
+      .get()
+      .then(
+        (value) => value.size > 0 ? true : false,
+      );
+  return doesExist;
 }

@@ -37,9 +37,11 @@ class WishlistBody extends HookWidget {
           }
         });
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return LoadingAnimationWidget.dotsTriangle(
-            color: AppConstant.titlecolor,
-            size: 40.sp,
+          return Center(
+            child: LoadingAnimationWidget.dotsTriangle(
+              color: AppConstant.titlecolor,
+              size: 40.sp,
+            ),
           );
         } else if (snapshot.hasData) {
           return WishlistData(

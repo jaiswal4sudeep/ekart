@@ -11,7 +11,7 @@ class CartBody extends StatelessWidget {
     required this.email,
   });
   final String email;
-  
+
   @override
   Widget build(BuildContext context) {
     final fireRef = FirebaseFirestore.instance;
@@ -19,9 +19,11 @@ class CartBody extends StatelessWidget {
       future: fireRef.collection('user').doc(email).collection('cart').get(),
       builder: (context, snapShot) {
         if (snapShot.connectionState == ConnectionState.waiting) {
-          return LoadingAnimationWidget.dotsTriangle(
-            color: AppConstant.titlecolor,
-            size: 40.sp,
+          return Center(
+            child: LoadingAnimationWidget.dotsTriangle(
+              color: AppConstant.titlecolor,
+              size: 40.sp,
+            ),
           );
         } else if (snapShot.hasData) {
           var data = snapShot.data;
