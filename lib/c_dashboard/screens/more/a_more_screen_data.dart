@@ -1,9 +1,7 @@
 import 'package:ekart/b_authentication/authentication_controller.dart';
 import 'package:ekart/b_authentication/authentication_screen.dart';
 import 'package:ekart/c_dashboard/screens/more/a_edit_profile/_edit_profile_screen.dart';
-import 'package:ekart/c_dashboard/screens/more/b_ec_zone/_ec_zone_screen.dart';
 import 'package:ekart/c_dashboard/screens/more/c_order_history/order_history_screen.dart';
-import 'package:ekart/c_dashboard/screens/more/d_about_app/_about_app_screen.dart';
 import 'package:ekart/c_dashboard/screens/more/services/check_app_latest_version.dart';
 import 'package:ekart/utils/app_constant.dart';
 import 'package:ekart/widgets/custom_widgets.dart';
@@ -117,28 +115,6 @@ class MoreScreenData extends HookWidget {
                           SizedBox(
                             height: 5.h,
                           ),
-                          Row(
-                            children: [
-                              Image.asset(
-                                'assets/icons/ec.png',
-                                height: 15.sp,
-                                color: AppConstant.secondaryColor,
-                              ),
-                              SizedBox(
-                                width: 5.w,
-                              ),
-                              Text(
-                                userData['ec'].toString(),
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .headline4!
-                                    .copyWith(
-                                      fontWeight: FontWeight.bold,
-                                      color: AppConstant.secondaryColor,
-                                    ),
-                              ),
-                            ],
-                          ),
                         ],
                       ),
                     ],
@@ -174,24 +150,6 @@ class MoreScreenData extends HookWidget {
             onTap: () {
               Navigator.of(context).push(
                 MaterialPageRoute(
-                  builder: (context) => const ECZoneScreen(),
-                ),
-              );
-            },
-            title: const TextStyle5(
-              content: 'EC Zone',
-            ),
-            leading: const ImgStyle(
-              img: 'ec_coin',
-            ),
-            trailing: const Icon(
-              Icons.keyboard_arrow_right_rounded,
-            ),
-          ),
-          ListTile(
-            onTap: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
                   builder: (context) => const OrderHistoryScreen(),
                 ),
               );
@@ -201,24 +159,6 @@ class MoreScreenData extends HookWidget {
             ),
             leading: const ImgStyle(
               img: 'bill',
-            ),
-            trailing: const Icon(
-              Icons.keyboard_arrow_right_rounded,
-            ),
-          ),
-          ListTile(
-            onTap: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => const AboutAppScreen(),
-                ),
-              );
-            },
-            title: const TextStyle5(
-              content: 'About App',
-            ),
-            leading: const ImgStyle(
-              img: 'info',
             ),
             trailing: const Icon(
               Icons.keyboard_arrow_right_rounded,

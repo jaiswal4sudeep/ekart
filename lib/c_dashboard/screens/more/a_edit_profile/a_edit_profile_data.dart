@@ -23,9 +23,6 @@ class EditProfileData extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final userName = useTextEditingController(
-      text: personalData['displayName'],
-    );
     final userEmail = useTextEditingController(
       text: personalData['email'],
     );
@@ -53,20 +50,6 @@ class EditProfileData extends HookWidget {
           children: [
             SizedBox(
               height: 5.h,
-            ),
-            CustomTextFormField(
-              controller: userName,
-              labelText: 'Full name',
-              textInputType: TextInputType.name,
-              validator: (value) {
-                if (value == null || value.trim().isEmpty) {
-                  return 'Please enter your name';
-                }
-                if (value.trim().length < 4) {
-                  return 'Name must be at least 4 characters';
-                }
-                return null;
-              },
             ),
             CustomTextFormField(
               controller: userEmail,

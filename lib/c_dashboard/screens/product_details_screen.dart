@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:ekart/c_dashboard/c_cart/cart_body.dart';
 import 'package:ekart/services/zoom_image.dart';
 import 'package:ekart/utils/app_constant.dart';
 import 'package:ekart/widgets/custom_button.dart';
@@ -103,20 +102,6 @@ class ProductDetailsScreen extends HookWidget {
               color: isWishlisted.value
                   ? AppConstant.red
                   : AppConstant.titlecolor.withOpacity(0.8),
-            ),
-          ),
-          IconButton(
-            onPressed: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => CartBody(
-                    email: email,
-                  ),
-                ),
-              );
-            },
-            icon: const Icon(
-              Icons.shopping_bag_outlined,
             ),
           ),
           SizedBox(

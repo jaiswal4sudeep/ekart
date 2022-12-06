@@ -44,7 +44,6 @@ class AuthenticationController {
               'wishlist': [],
               'isPhoneNoVerified': false,
               'isEmailVerified': user.emailVerified,
-              'ec': 0,
             },
           ).onError(
             (error, stackTrace) => Fluttertoast.showToast(
@@ -98,7 +97,6 @@ class AuthenticationController {
             'wishlist': [],
             'isPhoneNoVerified': false,
             'isEmailVerified': user!.emailVerified,
-            'ec': 0,
           },
         ).onError(
           (error, stackTrace) => Fluttertoast.showToast(

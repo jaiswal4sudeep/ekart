@@ -55,5 +55,3 @@ class CartBody extends StatelessWidget {
     );
   }
 }
-
-proceedToCheckout() {}

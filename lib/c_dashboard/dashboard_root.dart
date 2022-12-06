@@ -5,6 +5,7 @@ import 'package:ekart/c_dashboard/screens/search_screen.dart';
 import 'package:ekart/c_dashboard/b_wishlist/wishlist_body.dart';
 import 'package:ekart/c_dashboard/c_cart/cart_body.dart';
 import 'package:ekart/c_dashboard/widgets/bottom_navbar.dart';
+import 'package:ekart/c_dashboard/widgets/checkout_fab.dart';
 import 'package:ekart/utils/app_constant.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -129,6 +130,7 @@ class _DashboardRootState extends ConsumerState<DashboardRoot> {
         bottomNavigationBar: BottomNavBar(
           selIndex: selIndex,
         ),
+        floatingActionButton: selIndex.value == 2 ? const CheckOutFAB() : null,
       ),
     );
   }
