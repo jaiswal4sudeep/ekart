@@ -1,4 +1,4 @@
-# ekart
+# eKart
 
 A new Flutter project.
 
